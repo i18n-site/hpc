@@ -1,0 +1,18 @@
+[package]
+name = "apierr"
+version = "0.1.5"
+edition = "2024"
+license = "MulanPSL-2.0"
+repository = "https://github.com/i18n-site/hpc.git"
+homepage = "https://github.com/i18n-site/hpc/tree/dev/rust/apierr"
+description = "apierr"
+
+[dev-dependencies]
+aok = "0.1.15"
+
+[features]
+default = []
+icall = ["dep:icall"]
+
+[dependencies]
+icall = { version = "0.1.12", path = "../icall", optional = true }

@@ -1,0 +1,21 @@
+{
+  "name": "@3-/ireq",
+  "version": "0.1.10",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/i18n-site/hpc.git"
+  },
+  "homepage": "https://github.com/i18n-site/hpc/tree/dev/coffee/ireq",
+  "author": "i18n.site@gmail.com",
+  "license": "Apache-2.0",
+  "exports": {
+    ".": "./lib/lib.js",
+    "./*": "./lib/*"
+  },
+  "files": [
+    "lib/*"
+  ],
+  "devDependencies": {},
+  "scripts": {},
+  "type": "module"
+}
