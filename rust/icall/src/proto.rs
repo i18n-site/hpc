@@ -353,19 +353,6 @@ impl ::pb_jelly::Reflection for BinLi {
   }
 }
 
-// enum Err {
-//   // 验证码错误
-//   Captcha = 0;
-//   // 当前用户未登录
-//   User = 1;
-//   // 权限不足
-//   Role = 2;
-//   Code = 3;
-//   CodeLi = 3;
-//   CodeMsg = 4;
-//   CodeMsgLi = 5;
-// }
-
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct CodeBin {
   pub code: u32,
@@ -816,6 +803,153 @@ impl ::pb_jelly::Reflection for CodeMsgLi {
       "msg_li" => {
         unimplemented!("Repeated fields are not currently supported.")
       }
+      _ => {
+        panic!("unknown field name given")
+      }
+    }
+  }
+}
+
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct Captcha {
+  pub id: ::std::vec::Vec<u8>,
+  pub img: ::std::vec::Vec<u8>,
+  pub tip: ::std::vec::Vec<u8>,
+}
+impl ::std::default::Default for Captcha {
+  fn default() -> Self {
+    Captcha {
+      id: ::std::default::Default::default(),
+      img: ::std::default::Default::default(),
+      tip: ::std::default::Default::default(),
+    }
+  }
+}
+::lazy_static::lazy_static! {
+  pub static ref Captcha_default: Captcha = Captcha::default();
+}
+impl ::pb_jelly::Message for Captcha {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "Captcha",
+      full_name: "Captcha",
+      fields: &[
+        ::pb_jelly::FieldDescriptor {
+          name: "id",
+          full_name: "Captcha.id",
+          index: 0,
+          number: 1,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "img",
+          full_name: "Captcha.img",
+          index: 1,
+          number: 2,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+        ::pb_jelly::FieldDescriptor {
+          name: "tip",
+          full_name: "Captcha.tip",
+          index: 2,
+          number: 3,
+          typ: ::pb_jelly::wire_format::Type::LengthDelimited,
+          label: ::pb_jelly::Label::Optional,
+          oneof_index: None,
+        },
+      ],
+      oneofs: &[],
+    })
+  }
+  fn compute_size(&self) -> usize {
+    let mut size = 0usize;
+    size += ::pb_jelly::helpers::compute_size_scalar::<::std::vec::Vec<u8>>(
+      &self.id,
+      1,
+      ::pb_jelly::wire_format::Type::LengthDelimited,
+    );
+    size += ::pb_jelly::helpers::compute_size_scalar::<::std::vec::Vec<u8>>(
+      &self.img,
+      2,
+      ::pb_jelly::wire_format::Type::LengthDelimited,
+    );
+    size += ::pb_jelly::helpers::compute_size_scalar::<::std::vec::Vec<u8>>(
+      &self.tip,
+      3,
+      ::pb_jelly::wire_format::Type::LengthDelimited,
+    );
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    ::pb_jelly::helpers::serialize_scalar::<W, ::std::vec::Vec<u8>>(
+      w,
+      &self.id,
+      1,
+      ::pb_jelly::wire_format::Type::LengthDelimited,
+    )?;
+    ::pb_jelly::helpers::serialize_scalar::<W, ::std::vec::Vec<u8>>(
+      w,
+      &self.img,
+      2,
+      ::pb_jelly::wire_format::Type::LengthDelimited,
+    )?;
+    ::pb_jelly::helpers::serialize_scalar::<W, ::std::vec::Vec<u8>>(
+      w,
+      &self.tip,
+      3,
+      ::pb_jelly::wire_format::Type::LengthDelimited,
+    )?;
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(
+    &mut self,
+    mut buf: &mut B,
+  ) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::vec::Vec<u8>>(
+            buf, typ, "Captcha", 1,
+          )?;
+          self.id = val;
+        }
+        2 => {
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::vec::Vec<u8>>(
+            buf, typ, "Captcha", 2,
+          )?;
+          self.img = val;
+        }
+        3 => {
+          let val = ::pb_jelly::helpers::deserialize_length_delimited::<B, ::std::vec::Vec<u8>>(
+            buf, typ, "Captcha", 3,
+          )?;
+          self.tip = val;
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::Reflection for Captcha {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "id" => ::pb_jelly::reflection::FieldMut::Value(&mut self.id),
+      "img" => ::pb_jelly::reflection::FieldMut::Value(&mut self.img),
+      "tip" => ::pb_jelly::reflection::FieldMut::Value(&mut self.tip),
       _ => {
         panic!("unknown field name given")
       }

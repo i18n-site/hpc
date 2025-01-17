@@ -1,11 +1,21 @@
 use std::{error::Error, fmt};
 
-pub const PRECONDITION_FAILED: u16 = 412;
-
 #[derive(Debug)]
 pub struct Response {
   pub code: u16,
   pub body: Vec<u8>,
+}
+
+impl From<(u16, Vec<u8>)> for Response {
+  fn from((code, body): (u16, Vec<u8>)) -> Self {
+    Response { code, body }
+  }
+}
+
+impl From<u16> for Response {
+  fn from(code: u16) -> Self {
+    Response { code, body: vec![] }
+  }
 }
 
 impl fmt::Display for Response {
@@ -13,20 +23,13 @@ impl fmt::Display for Response {
     write!(f, "Response {} : {:?}", self.code, self.body)
   }
 }
-pub enum Err {
-  // 验证码错误
-  Captcha = 0,
-  // 当前用户未登录
-  User = 1,
-  // 权限不足
-  Role = 2,
-  Code = 3,
-  CodeLi = 4,
-  CodeMsg = 5,
-  CodeMsgLi = 6,
-}
-
 impl Error for Response {}
+
+#[cfg(feature = "err")]
+mod err;
+
+#[cfg(feature = "err")]
+pub use err::*;
 
 // pub fn user() -> Result<(), Response> {
 //   Err(Response {

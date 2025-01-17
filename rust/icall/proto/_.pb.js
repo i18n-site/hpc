@@ -225,3 +225,38 @@ const CodeMsgLiRead = (msg, reader) => {
   }
   return msg;
 };
+/**
+ * Serializes Captcha to protobuf.
+ */
+export const CaptchaEncode = (msg) =>
+  _P.getResultBuffer(CaptchaWrite(msg, _P.binaryWriter()));
+/**
+ * Deserializes Captcha from protobuf.
+ */
+export const CaptchaDecode = (bytes) =>
+  CaptchaRead(CaptchaNew(), _P.binaryReader(bytes));
+const CaptchaNew = () => [_P.EMPTY_BIN, _P.EMPTY_BIN, _P.EMPTY_BIN];
+const CaptchaWrite = _P.encoder(_P.writeBytes, _P.writeBytes, _P.writeBytes);
+const CaptchaRead = (msg, reader) => {
+  while (_P.nextField(reader)) {
+    switch (_P.getFieldNumber(reader)) {
+      case 1: {
+        msg[0] = _P.readBytes(reader);
+        break;
+      }
+      case 2: {
+        msg[1] = _P.readBytes(reader);
+        break;
+      }
+      case 3: {
+        msg[2] = _P.readBytes(reader);
+        break;
+      }
+      default: {
+        _P.skipField(reader);
+        break;
+      }
+    }
+  }
+  return msg;
+};

@@ -26,7 +26,7 @@ axum = { version = "0.8.1" }
 futures = "0.3.31"
 pb-jelly = "0.0.17"
 icall = { version = "0.1.10", path = "../icall" }
-apierr = { version = "0.1.5", path = "../apierr" }
+apierr = { version = "0.1.5", path = "../apierr", default-features = false }
 
 [dev-dependencies]
 aok = "0.1.15"

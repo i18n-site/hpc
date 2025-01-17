@@ -11,8 +11,9 @@ description = "apierr"
 aok = "0.1.15"
 
 [features]
-default = []
-icall = ["dep:icall"]
+default = ["err"]
+err = ["dep:icall", "dep:pb-jelly"]
 
 [dependencies]
 icall = { version = "0.1.12", path = "../icall", optional = true }
+pb-jelly = { version = "0.0.17", optional = true }
