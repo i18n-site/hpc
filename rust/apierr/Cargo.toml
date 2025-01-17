@@ -1,6 +1,6 @@
 [package]
 name = "apierr"
-version = "0.1.5"
+version = "0.1.6"
 edition = "2024"
 license = "MulanPSL-2.0"
 repository = "https://github.com/i18n-site/hpc.git"
@@ -9,11 +9,14 @@ description = "apierr"
 
 [dev-dependencies]
 aok = "0.1.15"
+num-derive = "0.4.2"
 
 [features]
 default = ["err"]
-err = ["dep:icall", "dep:pb-jelly"]
+err = ["dep:icall", "dep:pb-jelly", "dep:num-traits"]
 
 [dependencies]
+aok = "0.1.15"
 icall = { version = "0.1.12", path = "../icall", optional = true }
+num-traits = { version = "0.2.19", optional = true }
 pb-jelly = { version = "0.0.17", optional = true }

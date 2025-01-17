@@ -1,3 +1,5 @@
+#![feature(try_trait_v2)]
+
 use std::{error::Error, fmt};
 
 #[derive(Debug)]
@@ -23,6 +25,7 @@ impl fmt::Display for Response {
     write!(f, "Response {} : {:?}", self.code, self.body)
   }
 }
+
 impl Error for Response {}
 
 #[cfg(feature = "err")]
