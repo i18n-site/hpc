@@ -8,10 +8,6 @@ import * as _P from "@3-/protoscript";
 //        Protobuf Encode / Decode        //
 //========================================//
 
-export const ERR_CODE_USER = 0;
-export const ERR_CODE_CAPTCHA = 1;
-export const ERR_CODE_FORM = 2;
-
 /**
  * Serializes Call to protobuf.
  */
@@ -53,15 +49,21 @@ export const CallLiEncode = (msg) =>
  */
 export const CallLiDecode = (bytes) =>
   CallLiRead(CallLiNew(), _P.binaryReader(bytes));
-const CallLiNew = () => [];
-const CallLiWrite = _P.encoder1(_P.writeRepeatedMessage(CallWrite));
+const CallLiNew = () => [[], []];
+const CallLiWrite = _P.encoder(_P.writePackedInt32, _P.writeRepeatedBytes);
 const CallLiRead = (msg, reader) => {
   while (_P.nextField(reader)) {
     switch (_P.getFieldNumber(reader)) {
       case 1: {
-        const m = CallNew();
-        _P.readMessage(reader, m, CallRead);
-        msg.push(m);
+        if (_P.isDelimited(reader)) {
+          msg[0].push(..._P.readPackedInt32(reader));
+        } else {
+          msg[0].push(_P.readInt32(reader));
+        }
+        break;
+      }
+      case 2: {
+        msg[1].push(_P.readBytes(reader));
         break;
       }
       default: {
@@ -100,18 +102,18 @@ const BinLiRead = (msg, reader) => {
   return msg;
 };
 /**
- * Serializes FormErr to protobuf.
+ * Serializes CodeBin to protobuf.
  */
-export const FormErrEncode = (msg) =>
-  _P.getResultBuffer(FormErrWrite(msg, _P.binaryWriter()));
+export const CodeBinEncode = (msg) =>
+  _P.getResultBuffer(CodeBinWrite(msg, _P.binaryWriter()));
 /**
- * Deserializes FormErr from protobuf.
+ * Deserializes CodeBin from protobuf.
  */
-export const FormErrDecode = (bytes) =>
-  FormErrRead(FormErrNew(), _P.binaryReader(bytes));
-const FormErrNew = () => [0];
-const FormErrWrite = _P.encoder(_P.writeUint32, _P.writeBytes);
-const FormErrRead = (msg, reader) => {
+export const CodeBinDecode = (bytes) =>
+  CodeBinRead(CodeBinNew(), _P.binaryReader(bytes));
+const CodeBinNew = () => [0, _P.EMPTY_BIN];
+const CodeBinWrite = _P.encoder(_P.writeUint32, _P.writeBytes);
+const CodeBinRead = (msg, reader) => {
   while (_P.nextField(reader)) {
     switch (_P.getFieldNumber(reader)) {
       case 1: {
@@ -131,24 +133,22 @@ const FormErrRead = (msg, reader) => {
   return msg;
 };
 /**
- * Serializes FormErrLi to protobuf.
+ * Serializes Code to protobuf.
  */
-export const FormErrLiEncode = (msg) =>
-  _P.getResultBuffer(FormErrLiWrite(msg, _P.binaryWriter()));
+export const CodeEncode = (msg) =>
+  _P.getResultBuffer(CodeWrite(msg, _P.binaryWriter()));
 /**
- * Deserializes FormErrLi from protobuf.
+ * Deserializes Code from protobuf.
  */
-export const FormErrLiDecode = (bytes) =>
-  FormErrLiRead(FormErrLiNew(), _P.binaryReader(bytes));
-const FormErrLiNew = () => [];
-const FormErrLiWrite = _P.encoder1(_P.writeRepeatedMessage(FormErrWrite));
-const FormErrLiRead = (msg, reader) => {
+export const CodeDecode = (bytes) =>
+  CodeRead(CodeNew(), _P.binaryReader(bytes));
+const CodeNew = () => 0;
+const CodeWrite = _P.encoder1(_P.writeUint32);
+const CodeRead = (msg, reader) => {
   while (_P.nextField(reader)) {
     switch (_P.getFieldNumber(reader)) {
       case 1: {
-        const m = FormErrNew();
-        _P.readMessage(reader, m, FormErrRead);
-        msg.push(m);
+        msg = _P.readUint32(reader);
         break;
       }
       default: {
@@ -160,26 +160,61 @@ const FormErrLiRead = (msg, reader) => {
   return msg;
 };
 /**
- * Serializes ErrMsg to protobuf.
+ * Serializes CodeLi to protobuf.
  */
-export const ErrMsgEncode = (msg) =>
-  _P.getResultBuffer(ErrMsgWrite(msg, _P.binaryWriter()));
+export const CodeLiEncode = (msg) =>
+  _P.getResultBuffer(CodeLiWrite(msg, _P.binaryWriter()));
 /**
- * Deserializes ErrMsg from protobuf.
+ * Deserializes CodeLi from protobuf.
  */
-export const ErrMsgDecode = (bytes) =>
-  ErrMsgRead(ErrMsgNew(), _P.binaryReader(bytes));
-const ErrMsgNew = () => [0, _P.EMPTY_BIN];
-const ErrMsgWrite = _P.encoder(_P.writeEnum, _P.writeBytes);
-const ErrMsgRead = (msg, reader) => {
+export const CodeLiDecode = (bytes) =>
+  CodeLiRead(CodeLiNew(), _P.binaryReader(bytes));
+const CodeLiNew = () => [];
+const CodeLiWrite = _P.encoder1(_P.writePackedUint32);
+const CodeLiRead = (msg, reader) => {
   while (_P.nextField(reader)) {
     switch (_P.getFieldNumber(reader)) {
       case 1: {
-        msg[0] = _P.readEnum(reader);
+        if (_P.isDelimited(reader)) {
+          msg.push(..._P.readPackedUint32(reader));
+        } else {
+          msg.push(_P.readUint32(reader));
+        }
+        break;
+      }
+      default: {
+        _P.skipField(reader);
+        break;
+      }
+    }
+  }
+  return msg;
+};
+/**
+ * Serializes CodeMsgLi to protobuf.
+ */
+export const CodeMsgLiEncode = (msg) =>
+  _P.getResultBuffer(CodeMsgLiWrite(msg, _P.binaryWriter()));
+/**
+ * Deserializes CodeMsgLi from protobuf.
+ */
+export const CodeMsgLiDecode = (bytes) =>
+  CodeMsgLiRead(CodeMsgLiNew(), _P.binaryReader(bytes));
+const CodeMsgLiNew = () => [[], []];
+const CodeMsgLiWrite = _P.encoder(_P.writePackedUint32, _P.writeRepeatedString);
+const CodeMsgLiRead = (msg, reader) => {
+  while (_P.nextField(reader)) {
+    switch (_P.getFieldNumber(reader)) {
+      case 1: {
+        if (_P.isDelimited(reader)) {
+          msg[0].push(..._P.readPackedUint32(reader));
+        } else {
+          msg[0].push(_P.readUint32(reader));
+        }
         break;
       }
       case 2: {
-        msg[1] = _P.readBytes(reader);
+        msg[1].push(_P.readString(reader));
         break;
       }
       default: {

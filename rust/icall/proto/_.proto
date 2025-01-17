@@ -8,7 +8,8 @@ message Call
 
 message CallLi
 {
-  repeated Call call_li = 1;
+  repeated int32 func_li = 1;
+  repeated bytes args_li = 2;
 }
 
 message BinLi
@@ -16,25 +17,37 @@ message BinLi
   repeated bytes bin_li = 1;
 }
 
-message FormErr
+message CodeBin
 {
   uint32 code = 1;
-  optional bytes bin = 2;
-}
-
-message FormErrLi
-{
-  repeated FormErr form_err_li = 1;
-}
-
-enum ErrCode {
-  User = 0;
-  Captcha = 1;
-  Form = 2;
-}
-
-message ErrMsg
-{
-  ErrCode err_code = 1;
   bytes bin = 2;
 }
+
+message Code
+{
+  uint32 code = 1;
+}
+
+message CodeLi
+{
+  repeated uint32 li = 1;
+}
+
+message CodeMsgLi
+{
+  repeated uint32 code_li = 1;
+  repeated string msg_li = 2;
+}
+
+// enum Err {
+//   // 验证码错误
+//   Captcha = 0;
+//   // 当前用户未登录
+//   User = 1;
+//   // 权限不足
+//   Role = 2;
+//   Code = 3;
+//   CodeLi = 3;
+//   CodeMsg = 4;
+//   CodeMsgLi = 5;
+// }

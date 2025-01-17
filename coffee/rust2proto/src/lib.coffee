@@ -62,17 +62,20 @@ export default (root)=>
     'uint32' #func
     'bytes' #args
   ]
+
   call_li_id = jsTypeId  [
     'repeated uint32' #func_li
     'repeated bytes' #args_li
   ]
-  bin_id = jsTypeId  [
-    'bytes' #bin
-  ]
+
   bin_li_id = jsTypeId  [
     'repeated bytes' #bin_li
   ]
 
+  code_msg_li = jsTypeId [
+    'repeated uint32'
+    'repeated optional string'
+  ]
 
   _protoType = protoType jsTypeId
 

@@ -49,16 +49,22 @@ const [
 })
 ```
 
-## 第一步: 简化 protobuf 生成的 js 代码
+##  第一步: 优化 protobuf 生成的 js 代码
 
-### 体积对比
+前后端协议是基于http的protobuf。
 
-在演示项目 [github/i18n-demo/protobuf-minify](https://github.com/i18n-demo/protobuf-minify?tab=readme-ov-file) 中 ，我对比了 [_.proto](https://github.com/i18n-demo/protobuf-minify/blob/main/proto/_.proto) 生成的 js 打包压缩后的体积:
+我基于 [protoscript](https://www.npmjs.com/package/protoscript) 二次开发了 [@3-/protoscript](https://www.npmjs.com/package/@3-/protoscript)，优化 `.proto` 文件生成的 js 代码。
+
+### js 文件大小: 减少 76%
+
+在演示项目 [github/i18n-demo/protobuf-minify](https://github.com/i18n-demo/protobuf-minify?tab=readme-ov-file) 中，我对比了 [_.proto](https://github.com/i18n-demo/protobuf-minify/blob/main/proto/_.proto) 生成的 js 打包压缩后的体积(减少了 76%):
 
 | Filename | Size (bytes) | Zstd (bytes, %) | Brotli (bytes, %) | Gzip (bytes, %) |
 |----------|--------------|-----------------|-------------------|-----------------|
 | [protoscript](https://www.npmjs.com/package/protoscript) | 38445 | 6989 (449.74%) | 6605 (425.03%) | 7400 (476.19%) |
 | [@3-/protoscript](https://www.npmjs.com/package/@3-/protoscript) | 4120 | 1651 (106.24%) | 1554 (100.00%) | 1688 (108.62%) |
+
+虽然格式解析js引入了几KB开销，但 [protobuf数据gz压缩后的大小约为json的70%](https://nilsmagnus.github.io/post/proto-json-sizes/)，这种开销会在数据传输中节省回来。
 
 ### 摇树优化
 
