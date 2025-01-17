@@ -353,6 +353,19 @@ impl ::pb_jelly::Reflection for BinLi {
   }
 }
 
+// enum Err {
+//   // 验证码错误
+//   Captcha = 0;
+//   // 当前用户未登录
+//   User = 1;
+//   // 权限不足
+//   Role = 2;
+//   Code = 3;
+//   CodeLi = 3;
+//   CodeMsg = 4;
+//   CodeMsgLi = 5;
+// }
+
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct CodeBin {
   pub code: u32,

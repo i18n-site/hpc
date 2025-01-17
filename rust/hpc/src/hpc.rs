@@ -68,8 +68,11 @@ async fn one<H: Hpc>(body: &[u8]) -> CodeBody {
 
 async fn batch<H: Hpc, const BATCH_LIMIT: usize>(body: &[u8]) -> CodeBody {
   match CallLi::deserialize_from_slice(body) {
-    Ok(CallLi { call_li }) => {
-      let len = call_li.len();
+    Ok(CallLi {
+      func_li: func_id_li,
+      args_li,
+    }) => {
+      let len = func_id_li.len();
       if len > BATCH_LIMIT {
         return res(
           StatusCode::PAYLOAD_TOO_LARGE,
@@ -78,10 +81,9 @@ async fn batch<H: Hpc, const BATCH_LIMIT: usize>(body: &[u8]) -> CodeBody {
       }
 
       let mut futures_ordered = FuturesOrdered::new();
-      let call_li_len = call_li.len();
-      let mut func_li = Vec::with_capacity(call_li_len);
+      let mut func_li = Vec::with_capacity(len);
 
-      for Call { func, args } in call_li {
+      for (func, args) in func_id_li.into_iter().zip(args_li.into_iter()) {
         match H::Func::try_from(func) {
           Ok(func) => {
             func_li.push(func);
@@ -93,7 +95,7 @@ async fn batch<H: Hpc, const BATCH_LIMIT: usize>(body: &[u8]) -> CodeBody {
         }
       }
 
-      let mut bin_li = Vec::with_capacity(call_li_len);
+      let mut bin_li = Vec::with_capacity(len);
       let mut pos = 0;
 
       while let Some(result) = futures_ordered.next().await {
