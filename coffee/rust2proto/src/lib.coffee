@@ -23,7 +23,7 @@ rm = (dir)=>
   rmSync dir, recursive: true, force: true
   return
 
-export default (root)=>
+export default (root, target_directory)=>
   DIR_MOD = join root, 'mod'
   DIR_GEN = join root, 'gen'
   DIR_JS = join DIR_GEN, 'js'
@@ -44,12 +44,6 @@ export default (root)=>
 
   cd DIR_MOD
 
-  {
-    stdout
-  } = await $'cargo metadata --no-deps --format-version=1'
-  {
-    target_directory
-  } = JSON.parse(stdout)
 
   TARGET_DOC = join(target_directory, 'doc')
 
