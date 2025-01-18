@@ -19,8 +19,7 @@ dist() {
 
   bun x mdt .
   git add .
-  rm -rf Cargo.lock
-  ln -s ../Cargo.lock
+  touch Cargo.lock
   cargo v patch -y
 
   git describe --tags $(git rev-list --tags --max-count=1) | xargs git tag -d
@@ -40,8 +39,9 @@ dist() {
 
 set -ex
 
-rm -rf Cargo.lock
-# ./clippy.sh
+git add -u || true
+git commit -m. || true
+./sh/clippy.sh
 
 if ! [ -x "$(command -v cargo-v)" ]; then
   cargo install cargo-v
