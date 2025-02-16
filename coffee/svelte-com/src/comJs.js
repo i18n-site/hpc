@@ -66,8 +66,9 @@ export default {
 								.map((i) => name + ">" + i)
 								.join(",")
 						})
-					
-          write(join(dir_css, no_ext_name + ".css"), css)
+						.replaceAll(name + ">_ {", name + " {")
+
+					write(join(dir_css, no_ext_name + ".css"), css)
 
 					r = minifyCss(css, fileName, true)
 					if (r) {
@@ -96,7 +97,6 @@ export default {
 			}
 
 			let outname
-
 		}
-	}
+	},
 }
