@@ -66,7 +66,7 @@ export default {
 								.map((i) => name + ">" + i)
 								.join(",")
 						})
-						.replaceAll(name + ">_ {", name + " {")
+						.replaceAll(name + ">_ ", name + " ")
 
 					write(join(dir_css, no_ext_name + ".css"), css)
 
