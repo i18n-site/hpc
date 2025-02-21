@@ -2,10 +2,6 @@ mod hpc;
 pub use hpc::{Hpc, run};
 pub use icall::CodeBody;
 
-mod captcha;
-use captcha::Captcha;
-pub use captcha::GenCaptcha;
-
 #[derive(Debug)]
 pub struct CallErr {
   pub func: &'static str,

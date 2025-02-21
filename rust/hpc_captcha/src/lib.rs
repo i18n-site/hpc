@@ -11,6 +11,12 @@ pub struct Captcha<G: GenCaptcha> {
   _g: PhantomData<G>,
 }
 
+impl<G: GenCaptcha> Default for Captcha<G> {
+  fn default() -> Self {
+    Self::new()
+  }
+}
+
 impl<G: GenCaptcha> Captcha<G> {
   pub fn new() -> Self {
     Captcha {

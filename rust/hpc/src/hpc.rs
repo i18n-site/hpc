@@ -7,12 +7,13 @@ use axum::{
   response::{IntoResponse, Response},
 };
 use futures::stream::{FuturesOrdered, StreamExt};
+use hpc_captcha::{Captcha, GenCaptcha};
 use icall::{BinLi, CallLi, CodeBody, State};
 use pb_jelly::{ClosedProtoEnum, Message};
 use req_::{Req, SetHeader};
 use tracing::warn;
 
-use crate::{CallErr, Captcha, GenCaptcha};
+use crate::CallErr;
 
 pub trait Hpc {
   type Func: TryFrom<u32> + ClosedProtoEnum + Copy;

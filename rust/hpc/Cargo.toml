@@ -30,6 +30,7 @@ icall = { version = "0.1.10", path = "../icall" }
 req_ = { version = "0.1.29", features = ["set_header"] }
 xerr = "0.1.15"
 cost_time = "0.1.2"
+hpc_captcha = { version = "0.1.0", path = "../hpc_captcha" }
 
 [dev-dependencies]
 aok = "0.1.17"
