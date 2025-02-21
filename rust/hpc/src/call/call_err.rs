@@ -8,7 +8,7 @@ use super::res;
 use crate::Hpc;
 
 #[derive(Debug)]
-struct CallErr {
+pub struct CallErr {
   pub func: &'static str,
   pub args: Vec<String>,
   pub err: String,
