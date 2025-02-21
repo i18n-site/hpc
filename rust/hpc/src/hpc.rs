@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use aok::{Error, Result};
+use aok::{Error, Result, Void};
 use axum::{
   body,
   http::{HeaderMap, HeaderName, HeaderValue, StatusCode, header::CONTENT_TYPE},
@@ -139,13 +139,20 @@ async fn batch<H: Hpc, const BATCH_LIMIT: usize>(
   (State::OK, bin_li.serialize_to_vec().into())
 }
 
-pub async fn run<H: Hpc, const BATCH_LIMIT: usize>(
+pub trait Middleware {
+  fn new() -> Self;
+  fn hook(&self, code_body: &mut CodeBody) -> impl std::future::Future<Output = Void> + Send;
+}
+
+pub async fn run<H: Hpc, const BATCH_LIMIT: usize, M: Middleware>(
   headers: HeaderMap,
   body: body::Bytes,
 ) -> Response {
   let req: Req = headers.into();
 
   let code_body;
+
+  let middleware = M::new();
 
   #[allow(clippy::never_loop)]
   loop {
@@ -157,9 +164,12 @@ pub async fn run<H: Hpc, const BATCH_LIMIT: usize>(
             1 => one::<H>(func_li[0], &args_li[0], &req).await,
             _ => {
               let cost = cost_time::start();
-              let code_body = batch::<H, BATCH_LIMIT>(func_li, args_li, &req).await;
+              let mut code_body = batch::<H, BATCH_LIMIT>(func_li, args_li, &req).await;
               println!("{}s", cost.sec());
-              code_body
+              match middleware.hook(&mut code_body).await {
+                Ok(_) => code_body,
+                Err(err) => res(State::MIDDLEWARE_ERROR, err.to_string()),
+              }
             }
           },
           Err(err) => res(State::ARGS_INVALID, err.to_string()),

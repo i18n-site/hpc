@@ -18,6 +18,7 @@ export const STATE_MISS_FUNC = 100;
 export const STATE_ARGS_INVALID = 101;
 export const STATE_BATCH_LIMIT = 102;
 export const STATE_CALL_ERROR = 103;
+export const STATE_MIDDLEWARE_ERROR = 104;
 
 /**
  * Serializes CallLi to protobuf.

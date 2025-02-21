@@ -12,9 +12,10 @@ pub enum State {
   ARGS_INVALID = 101,
   BATCH_LIMIT = 102,
   CALL_ERROR = 103,
+  MIDDLEWARE_ERROR = 104,
 }
 impl State {
-  pub const KNOWN_VARIANTS: [State; 10] = [
+  pub const KNOWN_VARIANTS: [State; 11] = [
     State::OK,
     State::JSON,
     State::CODE,
@@ -25,6 +26,7 @@ impl State {
     State::ARGS_INVALID,
     State::BATCH_LIMIT,
     State::CALL_ERROR,
+    State::MIDDLEWARE_ERROR,
   ];
 }
 impl ::std::default::Default for State {
@@ -45,6 +47,7 @@ impl From<State> for u32 {
       State::ARGS_INVALID => 101,
       State::BATCH_LIMIT => 102,
       State::CALL_ERROR => 103,
+      State::MIDDLEWARE_ERROR => 104,
     }
   }
 }
@@ -62,6 +65,7 @@ impl ::std::convert::TryFrom<u32> for State {
       101 => Ok(State::ARGS_INVALID),
       102 => Ok(State::BATCH_LIMIT),
       103 => Ok(State::CALL_ERROR),
+      104 => Ok(State::MIDDLEWARE_ERROR),
       _ => Err(v),
     }
   }
@@ -80,6 +84,7 @@ impl ::pb_jelly::ClosedProtoEnum for State {
       State::ARGS_INVALID => "ARGS_INVALID",
       State::BATCH_LIMIT => "BATCH_LIMIT",
       State::CALL_ERROR => "CALL_ERROR",
+      State::MIDDLEWARE_ERROR => "MIDDLEWARE_ERROR",
     }
   }
 }

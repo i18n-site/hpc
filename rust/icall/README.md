@@ -30,6 +30,7 @@ enum State {
   ARGS_INVALID = 101;
   BATCH_LIMIT = 102;
   CALL_ERROR = 103;
+  MIDDLEWARE_ERROR = 104;
 }
 
 message Code
