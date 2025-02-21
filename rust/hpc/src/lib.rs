@@ -1,6 +1,10 @@
-mod hpc;
-pub use hpc::{Hpc, run};
 pub use icall::CodeBody;
+
+mod hpc;
+pub use hpc::Hpc;
+
+mod call;
+pub use call::run;
 
 #[derive(Debug)]
 pub struct CallErr {
