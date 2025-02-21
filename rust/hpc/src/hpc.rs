@@ -12,7 +12,7 @@ use pb_jelly::{ClosedProtoEnum, Message};
 use req_::{Req, SetHeader};
 use tracing::warn;
 
-use crate::CallErr;
+use crate::{CallErr, Captcha, GenCaptcha};
 
 pub trait Hpc {
   type Func: TryFrom<u32> + ClosedProtoEnum + Copy;
@@ -38,19 +38,14 @@ pub trait Hpc {
   }
 }
 
-pub trait Captcha {
-  fn new() -> Self;
-  fn get(&mut self) -> impl Future<Output = Result<Vec<u8>>> + Send;
-}
-
 fn res(code: State, body: impl AsRef<[u8]>) -> CodeBody {
   (code, body.as_ref().into())
 }
 
-async fn call_err<H: Hpc, C: Captcha>(
+async fn call_err<H: Hpc, G: GenCaptcha>(
   func: H::Func,
   err: impl Into<Error>,
-  captcha: &mut C,
+  captcha: &mut Captcha<G>,
 ) -> CodeBody {
   let err = err.into();
 
@@ -85,11 +80,11 @@ fn miss_func(func: u32) -> CodeBody {
 }
 // Ok(Call { func, args }) =>
 
-async fn one<H: Hpc, C: Captcha>(
+async fn one<H: Hpc, G: GenCaptcha>(
   func_id: u32,
   args: &[u8],
   req: &Req,
-  captcha: &mut C,
+  captcha: &mut Captcha<G>,
 ) -> CodeBody {
   match H::Func::try_from(func_id) {
     Ok(func) => match H::run_with_log(req, func, args).await {
@@ -106,11 +101,11 @@ async fn one<H: Hpc, C: Captcha>(
   }
 }
 
-async fn batch<H: Hpc, const BATCH_LIMIT: usize, C: Captcha>(
+async fn batch<H: Hpc, const BATCH_LIMIT: usize, G: GenCaptcha>(
   func_id_li: Vec<u32>,
   args_li: Vec<Vec<u8>>,
   req: &Req,
-  captcha: &mut C,
+  captcha: &mut Captcha<G>,
 ) -> CodeBody {
   let len = func_id_li.len();
   if len > BATCH_LIMIT {
@@ -156,7 +151,7 @@ async fn batch<H: Hpc, const BATCH_LIMIT: usize, C: Captcha>(
   (State::OK, bin_li.serialize_to_vec().into())
 }
 
-pub async fn run<H: Hpc, const BATCH_LIMIT: usize, C: Captcha>(
+pub async fn run<H: Hpc, const BATCH_LIMIT: usize, G: GenCaptcha>(
   headers: HeaderMap,
   body: body::Bytes,
 ) -> Response {
@@ -164,7 +159,7 @@ pub async fn run<H: Hpc, const BATCH_LIMIT: usize, C: Captcha>(
 
   let code_body;
 
-  let mut captcha = C::new();
+  let mut captcha = Captcha::<G>::new();
 
   #[allow(clippy::never_loop)]
   loop {
