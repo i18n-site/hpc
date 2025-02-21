@@ -23,8 +23,6 @@ impl hpc::Hpc for Hpc {
   type Func = Func;
 
   async fn run(req: &req_::Req, func: Func, args: &[u8]) -> Result<Vec<u8>> {
-    let args = args.as_ref();
-
     Ok(match func {
 
 Func::None => return Ok(vec![]),
