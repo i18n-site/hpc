@@ -1,6 +1,6 @@
-use std::str::FromStr;
+use std::{future::Future, str::FromStr};
 
-use aok::{Error, Result, Void};
+use aok::{Error, Result};
 use axum::{
   body,
   http::{HeaderMap, HeaderName, HeaderValue, StatusCode, header::CONTENT_TYPE},
@@ -17,11 +17,7 @@ use crate::CallErr;
 pub trait Hpc {
   type Func: TryFrom<u32> + ClosedProtoEnum + Copy;
 
-  fn run(
-    req: &Req,
-    func: Self::Func,
-    args: &[u8],
-  ) -> impl std::future::Future<Output = Result<Vec<u8>>> + Send;
+  fn run(req: &Req, func: Self::Func, args: &[u8]) -> impl Future<Output = Result<Vec<u8>>> + Send;
 
   #[allow(async_fn_in_trait)]
   async fn run_with_log(req: &Req, func: Self::Func, args: &[u8]) -> Result<Vec<u8>> {
@@ -42,14 +38,29 @@ pub trait Hpc {
   }
 }
 
+pub trait Captcha {
+  fn new() -> Self;
+  fn get(&mut self) -> impl Future<Output = Result<Vec<u8>>> + Send;
+}
+
 fn res(code: State, body: impl AsRef<[u8]>) -> CodeBody {
   (code, body.as_ref().into())
 }
 
-fn call_err<H: Hpc>(func: H::Func, err: impl Into<Error>) -> CodeBody {
+async fn call_err<H: Hpc, C: Captcha>(
+  func: H::Func,
+  err: impl Into<Error>,
+  captcha: &mut C,
+) -> CodeBody {
   let err = err.into();
 
   if let Some(r) = icall::err::try_into(&err) {
+    if r.0 == State::CAPTCHA {
+      match captcha.get().await {
+        Ok(bin) => return res(State::CAPTCHA, bin),
+        Err(err) => return rt_err(State::MIDDLEWARE_ERROR, format!("captcha {err}")),
+      }
+    }
     return r;
   }
 
@@ -74,7 +85,12 @@ fn miss_func(func: u32) -> CodeBody {
 }
 // Ok(Call { func, args }) =>
 
-async fn one<H: Hpc>(func_id: u32, args: &[u8], req: &Req) -> CodeBody {
+async fn one<H: Hpc, C: Captcha>(
+  func_id: u32,
+  args: &[u8],
+  req: &Req,
+  captcha: &mut C,
+) -> CodeBody {
   match H::Func::try_from(func_id) {
     Ok(func) => match H::run_with_log(req, func, args).await {
       Ok(bin) => res(State::OK, {
@@ -84,16 +100,17 @@ async fn one<H: Hpc>(func_id: u32, args: &[u8], req: &Req) -> CodeBody {
         }
         .serialize_to_vec()
       }),
-      Err(err) => call_err::<H>(func, err),
+      Err(err) => call_err::<H, _>(func, err, captcha).await,
     },
     Err(_) => miss_func(func_id),
   }
 }
 
-async fn batch<H: Hpc, const BATCH_LIMIT: usize>(
+async fn batch<H: Hpc, const BATCH_LIMIT: usize, C: Captcha>(
   func_id_li: Vec<u32>,
   args_li: Vec<Vec<u8>>,
   req: &Req,
+  captcha: &mut C,
 ) -> CodeBody {
   let len = func_id_li.len();
   if len > BATCH_LIMIT {
@@ -126,7 +143,7 @@ async fn batch<H: Hpc, const BATCH_LIMIT: usize>(
         bin_li.push(bin);
       }
       Err(err) => {
-        let r = call_err::<H>(func_li[pos], err);
+        let r = call_err::<H, _>(func_li[pos], err, captcha).await;
         state_li.push(r.0 as u32);
         bin_li.push(r.1.into());
       }
@@ -139,12 +156,7 @@ async fn batch<H: Hpc, const BATCH_LIMIT: usize>(
   (State::OK, bin_li.serialize_to_vec().into())
 }
 
-pub trait Middleware {
-  fn new() -> Self;
-  fn hook(&self, code_body: &mut CodeBody) -> impl std::future::Future<Output = Void> + Send;
-}
-
-pub async fn run<H: Hpc, const BATCH_LIMIT: usize, M: Middleware>(
+pub async fn run<H: Hpc, const BATCH_LIMIT: usize, C: Captcha>(
   headers: HeaderMap,
   body: body::Bytes,
 ) -> Response {
@@ -152,7 +164,7 @@ pub async fn run<H: Hpc, const BATCH_LIMIT: usize, M: Middleware>(
 
   let code_body;
 
-  let middleware = M::new();
+  let mut captcha = C::new();
 
   #[allow(clippy::never_loop)]
   loop {
@@ -161,15 +173,13 @@ pub async fn run<H: Hpc, const BATCH_LIMIT: usize, M: Middleware>(
         code_body = match CallLi::deserialize_from_slice(&body) {
           Ok(CallLi { func_li, args_li }) => match func_li.len() {
             0 => return (StatusCode::BAD_REQUEST, "no func call").into_response(),
-            1 => one::<H>(func_li[0], &args_li[0], &req).await,
+            1 => one::<H, _>(func_li[0], &args_li[0], &req, &mut captcha).await,
             _ => {
               let cost = cost_time::start();
-              let mut code_body = batch::<H, BATCH_LIMIT>(func_li, args_li, &req).await;
+              let code_body =
+                batch::<H, BATCH_LIMIT, _>(func_li, args_li, &req, &mut captcha).await;
               println!("{}s", cost.sec());
-              match middleware.hook(&mut code_body).await {
-                Ok(_) => code_body,
-                Err(err) => res(State::MIDDLEWARE_ERROR, err.to_string()),
-              }
+              code_body
             }
           },
           Err(err) => res(State::ARGS_INVALID, err.to_string()),
