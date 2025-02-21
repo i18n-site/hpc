@@ -5,15 +5,14 @@ use axum::{
   http::{HeaderMap, HeaderName, HeaderValue, StatusCode, header::CONTENT_TYPE},
   response::{IntoResponse, Response},
 };
-use hpc_captcha::{Captcha, GenCaptcha};
+use hpc_captcha::Captcha;
 use icall::{CallLi, State};
 use pb_jelly::Message;
 use req_::{Req, SetHeader};
 
 use super::{batch, one, res};
-use crate::Hpc;
 
-pub async fn run<H: Hpc, const BATCH_LIMIT: usize, G: GenCaptcha>(
+pub async fn run<const BATCH_LIMIT: usize, Hpc: crate::Hpc, GenCaptcha: hpc_captcha::GenCaptcha>(
   headers: HeaderMap,
   body: body::Bytes,
 ) -> Response {
@@ -21,7 +20,7 @@ pub async fn run<H: Hpc, const BATCH_LIMIT: usize, G: GenCaptcha>(
 
   let code_body;
 
-  let mut captcha = Captcha::<G>::new();
+  let mut captcha = Captcha::<GenCaptcha>::new();
 
   #[allow(clippy::never_loop)]
   loop {
@@ -30,11 +29,11 @@ pub async fn run<H: Hpc, const BATCH_LIMIT: usize, G: GenCaptcha>(
         code_body = match CallLi::deserialize_from_slice(&body) {
           Ok(CallLi { func_li, args_li }) => match func_li.len() {
             0 => return (StatusCode::BAD_REQUEST, "no func call").into_response(),
-            1 => one::<H, _>(func_li[0], &args_li[0], &req, &mut captcha).await,
+            1 => one::<Hpc, _>(func_li[0], &args_li[0], &req, &mut captcha).await,
             _ => {
               let cost = cost_time::start();
               let code_body =
-                batch::<H, BATCH_LIMIT, _>(func_li, args_li, &req, &mut captcha).await;
+                batch::<Hpc, BATCH_LIMIT, _>(func_li, args_li, &req, &mut captcha).await;
               println!("{}s", cost.sec());
               code_body
             }
