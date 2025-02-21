@@ -5,7 +5,22 @@ use pb_jelly::ClosedProtoEnum;
 use tracing::warn;
 
 use super::res;
-use crate::{CallErr, Hpc};
+use crate::Hpc;
+
+#[derive(Debug)]
+struct CallErr {
+  pub func: &'static str,
+  pub args: Vec<String>,
+  pub err: String,
+}
+
+impl std::fmt::Display for CallErr {
+  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    write!(f, "{}({}) {}", self.func, self.args.join(","), self.err)
+  }
+}
+
+impl std::error::Error for CallErr {}
 
 pub async fn call_err<H: Hpc, G: GenCaptcha>(
   func: H::Func,
