@@ -15,7 +15,7 @@ returnType = (
         rsRunPush """
 \n    match (r as i32).try_into() {
         Ok::<#{pb_name}, _>(r) => r.serialize_to_vec(),
-        Err(err) => return Err(anyhow!(format!("#{pb_name} Invalid: {err}"))),
+        Err(err) => return Err(err)
       }"""
         return
 

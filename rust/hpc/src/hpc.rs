@@ -1,7 +1,7 @@
 use std::future::Future;
 
 use hpc_captcha::{Captcha, GenCaptcha};
-use icall::{CodeBody, State};
+use icall::CodeBody;
 use pb_jelly::ClosedProtoEnum;
 use req_::Req;
 
@@ -27,17 +27,7 @@ pub trait Hpc {
       let name = func.name();
       let cost = cost.sec();
       println!("{name} {cost}s");
-      if ![State::OK, State::CAPTCHA, State::CODE, State::JSON].contains(&r.0) {
-        eprintln!("{:?} {}", r.0, String::from_utf8_lossy(&r.1));
-      }
       r
-      // match r {
-      //   Ok(r) => {
-      //     println!("{name} {cost}s");
-      //     res(State::OK, r)
-      //   }
-      //   Err(err) => call_err::<Self, _>(func, err, captcha).await,
-      // }
     }
   }
 }

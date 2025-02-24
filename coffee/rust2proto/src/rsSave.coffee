@@ -10,9 +10,10 @@
 //! AUTO GEN BY rust2proto , DO NOT EDIT
 
 use aok::{anyhow, Result};
-use hpc::CallErr;
-use pb::Func;
 use dstr::dvec;
+use hpc::CallErr;
+use hpc_captcha::{Captcha, GenCaptcha, call_err};
+use pb::Func;
 use pb_jelly::Message;
 use r#mod::*;
 
@@ -22,7 +23,9 @@ impl hpc::Hpc for Hpc {
 
   type Func = Func;
 
-  async fn run(req: &req_::Req, func: Func, args: &[u8]) -> Result<Vec<u8>> {
+  async fn run<G: GenCaptcha>(
+    req: &req_::Req, func: Func, args: &[u8], captcha: &Captcha<G>
+  ) -> Result<Vec<u8>> {
     Ok(match func {
 
 Func::None => return Ok(vec![]),

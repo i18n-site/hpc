@@ -7,8 +7,8 @@ mod one;
 pub(crate) use one::one;
 
 mod call_err;
+pub use call_err::call_err;
 pub(crate) use call_err::miss_func;
-pub use call_err::{CallErr, call_err};
 
 mod run;
 pub use run::run;

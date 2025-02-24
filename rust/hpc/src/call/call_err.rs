@@ -6,25 +6,11 @@ use tracing::warn;
 
 use crate::Hpc;
 
-#[derive(Debug)]
-pub struct CallErr {
-  pub func: &'static str,
-  pub args: Vec<String>,
-  pub err: String,
-}
-
-impl std::fmt::Display for CallErr {
-  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-    write!(f, "{}({}) {}", self.func, self.args.join(","), self.err)
-  }
-}
-
-impl std::error::Error for CallErr {}
-
 pub async fn call_err<H: Hpc + ?Sized, G: GenCaptcha>(
   func: H::Func,
   err: impl Into<Error>,
   captcha: &Captcha<G>,
+  get_args: impl FnOnce() -> String,
 ) -> CodeBody {
   let err = err.into();
 
@@ -38,16 +24,8 @@ pub async fn call_err<H: Hpc + ?Sized, G: GenCaptcha>(
     return r;
   }
 
-  if let Some(r) = err.downcast_ref::<CallErr>() {
-    tracing::error!("{r}");
-    return (
-      State::CALL_ERROR,
-      format!("{} {}", r.func, r.err).as_bytes().into(),
-    );
-  }
-
   let name = func.name();
-  tracing::error!("{name} {err}");
+  tracing::error!("{name} {err} {}", get_args());
   rt_err(State::CALL_ERROR, format!("{name} {err}"))
 }
 
