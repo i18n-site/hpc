@@ -22,7 +22,7 @@ pub async fn call_err<G: GenCaptcha>(
   }
 
   tracing::error!("{func} {} {err} ", get_args());
-  rt_err(State::CALL_ERROR, format!("{func} {err}"))
+  (State::CALL_ERROR, format!("{func} {err}").as_bytes().into())
 }
 
 pub fn rt_err(code: State, err: impl std::fmt::Display) -> CodeBody {

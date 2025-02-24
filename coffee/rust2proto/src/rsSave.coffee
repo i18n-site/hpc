@@ -9,7 +9,7 @@
     """
 //! AUTO GEN BY rust2proto , DO NOT EDIT
 
-use aok::{anyhow, Result};
+use aok::anyhow;
 use dstr::dvec;
 use hpc::{call_err, args_invalid};
 use icall::{CodeBody,State};

@@ -66,7 +66,7 @@ export default (
     args_parse = "pb::#{proto_name}::#{up_func_name}Args::deserialize_from_slice(args)"
     rsRunPush 'match '+args_parse+"""
 {
-  Err(err)=>args_invalid("#{proto_name}::#{up_func_name}"),
+  Err(_)=>args_invalid("#{proto_name}::#{up_func_name}"),
   Ok(args)=>{\n
 """
 
