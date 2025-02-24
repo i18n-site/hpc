@@ -1,0 +1,9 @@
+# icall
+
+call interface proto for hpc
+
+```rust
+<+ ./proto/_.proto>
+```
+
+<+ ../about.md >
