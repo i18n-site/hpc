@@ -1,13 +1,10 @@
 use aok::Error;
 use hpc_captcha::{Captcha, GenCaptcha};
 use icall::{CodeBody, State};
-use pb_jelly::ClosedProtoEnum;
 use tracing::warn;
 
-use crate::Hpc;
-
-pub async fn call_err<H: Hpc + ?Sized, G: GenCaptcha>(
-  func: H::Func,
+pub async fn call_err<G: GenCaptcha>(
+  func: &str,
   err: impl Into<Error>,
   captcha: &Captcha<G>,
   get_args: impl FnOnce() -> String,
@@ -24,9 +21,8 @@ pub async fn call_err<H: Hpc + ?Sized, G: GenCaptcha>(
     return r;
   }
 
-  let name = func.name();
-  tracing::error!("{name} {err} {}", get_args());
-  rt_err(State::CALL_ERROR, format!("{name} {err}"))
+  tracing::error!("{func} {} {err} ", get_args());
+  rt_err(State::CALL_ERROR, format!("{func} {err}"))
 }
 
 pub fn rt_err(code: State, err: impl std::fmt::Display) -> CodeBody {

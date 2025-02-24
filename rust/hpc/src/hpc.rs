@@ -13,7 +13,7 @@ pub trait Hpc {
     func: Self::Func,
     args: &[u8],
     captcha: &Captcha<G>,
-  ) -> impl Future<Output = CodeBody> + Send;
+  ) -> impl Future<Output = CodeBody>;
 
   fn run_with_log<G: GenCaptcha>(
     req: &Req,

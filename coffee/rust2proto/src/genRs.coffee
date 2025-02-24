@@ -7,19 +7,20 @@ returnType = (
   proto_name, rt_name
   rt_type_li
 )=>
+  mod_func_name = "#{proto_name}::#{rt_name}"
   if rt_type_li
     if rt_type_li.length == 1
       [rt_type] = rt_type_li
       if rt_type[1] == 'enum'
-        pb_name = "pb::#{proto_name}::#{rt_name}"
+        pb_name = "pb::#{mod_func_name}"
         rsRunPush """
 \n    match (r as i32).try_into() {
   Ok::<#{pb_name}, _>(r) => (State::OK, r.serialize_to_vec()),
-  Err(err) => return call_err(func, anyhow!("#{proto_name}::#{rt_name} invaild {err}"), captcha, ||s_::EMPTY).await
+  Err(err) => return call_err("#{mod_func_name}", anyhow!("enum invaild {err}"), captcha, ||s_::EMPTY).await
       }"""
         return
 
-    rsRunPush "(State::OK, pb::#{proto_name}::#{rt_name} {"
+    rsRunPush "(State::OK, pb::#{mod_func_name} {"
 
     t = []
 
@@ -65,9 +66,7 @@ export default (
     args_parse = "pb::#{proto_name}::#{up_func_name}Args::deserialize_from_slice(args)"
     rsRunPush 'match '+args_parse+"""
 {
-  Err(err)=>{
-    (State::ARGS_INVALID, "#{proto_name}::#{up_func_name}")
-  },
+  Err(err)=>args_invalid("#{proto_name}::#{up_func_name}"),
   Ok(args)=>{\n
 """
 
@@ -110,7 +109,14 @@ export default (
 
   rsRunPush """
 ).await {
-  Err(err)=>call_err(func, err, captcha, || dvec![#{args.join(',')}].join(",")).await,\n  Ok("""
+  Err(err)=>call_err("#{mod_func}", err, captcha, || """
+
+  if args_len
+    rsRunPush """dvec![#{args.join(',')}].join(",")"""
+  else
+    rsRunPush "s_::EMPTY"
+
+  rsRunPush """).await,\n  Ok("""
   if rt_type_li
     rsRunPush  'r)=>'
     returnType rsRunPush, proto_name, rt_name, rt_type_li
