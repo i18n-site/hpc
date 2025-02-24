@@ -14,8 +14,8 @@ returnType = (
         pb_name = "pb::#{proto_name}::#{rt_name}"
         rsRunPush """
 \n    match (r as i32).try_into() {
-        Ok::<#{pb_name}, _>(r) => (State::OK, r.serialize_to_vec()),
-        Err(err) => return call_err(func, err, captcha, ||s_::EMPTY).await
+  Ok::<#{pb_name}, _>(r) => (State::OK, r.serialize_to_vec()),
+  Err(err) => return call_err(func, anyhow!("#{proto_name}::#{rt_name} invaild {err}"), captcha, ||s_::EMPTY).await
       }"""
         return
 
@@ -25,7 +25,7 @@ returnType = (
 
     for [name, type] from rt_type_li
 
-      code = '\n      ' + (
+      code = '\n    ' + (
         if name then "#{name}: r.#{name}" else "v: r"
       )
 
@@ -35,10 +35,10 @@ returnType = (
       t.push code
 
     rsRunPush t.join(',')
-    rsRunPush '\n    }.serialize_to_vec()'
+    rsRunPush '\n  }.serialize_to_vec()'
   else
-    rsRunPush """\n        vec![]"""
-  rsRunPush '\n)'
+    rsRunPush """\n  vec![]"""
+  rsRunPush ')'
   return
 
 export default (
@@ -56,14 +56,20 @@ export default (
   #   args_id, rt_type_li, rt_id, rt_name, func_name, proto_name
   # }
 
-  func = """\nFunc::#{crateFuncName(UpCamel(proto_name),up_func_name)} => {\n"""
+  func = """\nFunc::#{crateFuncName(UpCamel(proto_name),up_func_name)} => """
   rsRunPush func
 
   mod_func = """#{proto_name}::#{sub_mod}#{func_name}"""
 
   if args_id
     args_parse = "pb::#{proto_name}::#{up_func_name}Args::deserialize_from_slice(args)"
-    rsRunPush '  let args = '+args_parse+'?;\n'
+    rsRunPush 'match '+args_parse+"""
+{
+  Err(err)=>{
+    (State::ARGS_INVALID, "#{proto_name}::#{up_func_name}")
+  },
+  Ok(args)=>{\n
+"""
 
   `args_li??=[]`
   args_len = Math.max(from_req.length, args_li.length)
@@ -94,7 +100,9 @@ export default (
         code = code + ' as ' + type
       args.push code
 
-  rsRunPush '  match '
+  if args_len
+    rsRunPush '  '
+  rsRunPush 'match '
 
   rsRunPush mod_func+'('
 
@@ -102,18 +110,15 @@ export default (
 
   rsRunPush """
 ).await {
-    Err(err)=>call_err(
-      func,
-      err,
-      captcha,
-      || dvec![#{args.join(',')}].join(","),
-    ).await,\n    Ok("""
+  Err(err)=>call_err(func, err, captcha, || dvec![#{args.join(',')}].join(",")).await,\n  Ok("""
   if rt_type_li
     rsRunPush  'r)=>'
     returnType rsRunPush, proto_name, rt_name, rt_type_li
   else
     rsRunPush  '_)=>(State::OK, vec![])'
-  rsRunPush '\n  }\n}'
+  if args_id
+    rsRunPush '\n  }  \n}'
+  rsRunPush '\n}\n'
 
   return
 

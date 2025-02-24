@@ -4,7 +4,10 @@ mod hpc;
 pub use hpc::Hpc;
 
 mod call;
-pub use call::{call_err, run};
+pub use call::{
+  call_err::{args_invalid, call_err},
+  run,
+};
 
 #[cfg(feature = "srv")]
 pub async fn srv(port: u16, router: axum::Router) -> aok::Result<()> {

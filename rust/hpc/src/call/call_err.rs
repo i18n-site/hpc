@@ -29,7 +29,7 @@ pub async fn call_err<H: Hpc + ?Sized, G: GenCaptcha>(
   rt_err(State::CALL_ERROR, format!("{name} {err}"))
 }
 
-fn rt_err(code: State, err: impl std::fmt::Display) -> CodeBody {
+pub fn rt_err(code: State, err: impl std::fmt::Display) -> CodeBody {
   let err = format!("{err}");
   warn!("{err}");
   (code, err.as_bytes().into())
@@ -37,4 +37,8 @@ fn rt_err(code: State, err: impl std::fmt::Display) -> CodeBody {
 
 pub fn miss_func(func: u32) -> CodeBody {
   rt_err(State::MISS_FUNC, format!("{func}"))
+}
+
+pub fn args_invalid(func: &str) -> CodeBody {
+  rt_err(State::ARGS_INVALID, func)
 }
