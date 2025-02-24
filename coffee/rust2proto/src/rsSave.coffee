@@ -11,8 +11,9 @@
 
 use aok::{anyhow, Result};
 use dstr::dvec;
-use hpc::CallErr;
-use hpc_captcha::{Captcha, GenCaptcha, call_err};
+use hpc::call_err;
+use icall::{CodeBody,State};
+use hpc_captcha::{Captcha, GenCaptcha};
 use pb::Func;
 use pb_jelly::Message;
 use r#mod::*;
@@ -25,10 +26,10 @@ impl hpc::Hpc for Hpc {
 
   async fn run<G: GenCaptcha>(
     req: &req_::Req, func: Func, args: &[u8], captcha: &Captcha<G>
-  ) -> Result<Vec<u8>> {
+  ) -> CodeBody {
     Ok(match func {
 
-Func::None => return Ok(vec![]),
+Func::None => return (State::OK, vec![]),
 #{rs_run}
 
     })

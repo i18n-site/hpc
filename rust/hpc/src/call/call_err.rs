@@ -17,7 +17,7 @@ pub async fn call_err<H: Hpc + ?Sized, G: GenCaptcha>(
   if let Some(r) = icall::err::try_into(&err) {
     if r.0 == State::CAPTCHA {
       match captcha.get().await {
-        Ok(bin) => return (State::CAPTCHA, bin.into()),
+        Ok(bin) => return (State::CAPTCHA, bin),
         Err(err) => return rt_err(State::MIDDLEWARE_ERROR, format!("captcha {err}")),
       }
     }

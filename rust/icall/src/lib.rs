@@ -24,7 +24,7 @@ mod proto;
 pub use proto::*;
 
 #[cfg(feature = "err")]
-pub type CodeBody = (State, Box<[u8]>);
+pub type CodeBody = (State, Vec<u8>);
 
 #[cfg(feature = "err")]
 pub mod err;

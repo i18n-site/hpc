@@ -14,12 +14,12 @@ returnType = (
         pb_name = "pb::#{proto_name}::#{rt_name}"
         rsRunPush """
 \n    match (r as i32).try_into() {
-        Ok::<#{pb_name}, _>(r) => r.serialize_to_vec(),
-        Err(err) => return Err(err)
+        Ok::<#{pb_name}, _>(r) => (State::OK, r.serialize_to_vec()),
+        Err(err) => return call_err(func, err, captcha, ||s_::EMPTY).await
       }"""
         return
 
-    rsRunPush "pb::#{proto_name}::#{rt_name} {"
+    rsRunPush "(State::OK, pb::#{proto_name}::#{rt_name} {"
 
     t = []
 
@@ -38,6 +38,7 @@ returnType = (
     rsRunPush '\n    }.serialize_to_vec()'
   else
     rsRunPush """\n        vec![]"""
+  rsRunPush '\n)'
   return
 
 export default (
@@ -101,16 +102,17 @@ export default (
 
   rsRunPush """
 ).await {
-    Err(err)=>Err(CallErr{
-      func: "#{mod_func}",
-      args: dvec![#{args.join(',')}],
-      err: err.to_string()
-    })?,\n    Ok("""
+    Err(err)=>call_err(
+      func,
+      err,
+      captcha,
+      || dvec![#{args.join(',')}].join(","),
+    ).await,\n    Ok("""
   if rt_type_li
     rsRunPush  'r)=>'
     returnType rsRunPush, proto_name, rt_name, rt_type_li
   else
-    rsRunPush  '_)=>vec![]'
+    rsRunPush  '_)=>(State::OK, vec![])'
   rsRunPush '\n  }\n}'
 
   return

@@ -39,7 +39,7 @@ pub async fn batch<H: Hpc, const BATCH_LIMIT: usize, G: GenCaptcha>(
 
   while let Some(result) = futures_ordered.next().await {
     state_li.push(result.0.into());
-    bin_li.push(result.1.into());
+    bin_li.push(result.1);
   }
 
   BinLi { state_li, bin_li }

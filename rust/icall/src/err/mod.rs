@@ -8,7 +8,7 @@ pub fn try_into(err: &anyhow::Error) -> Option<CodeBody> {
   }
 
   if let Some(t) = err.downcast_ref::<Json>() {
-    return Some((State::JSON, t.serialize_to_vec().into()));
+    return Some((State::JSON, t.serialize_to_vec()));
   }
   None
 }

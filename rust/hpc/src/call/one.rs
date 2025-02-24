@@ -17,6 +17,6 @@ pub async fn one<H: Hpc, G: GenCaptcha>(
   };
   BinLi {
     state_li: vec![r.0 as u32],
-    bin_li: vec![r.1.into()],
+    bin_li: vec![r.1],
   }
 }
