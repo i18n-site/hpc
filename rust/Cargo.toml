@@ -1,0 +1,29 @@
+[workspace]
+members = [
+  "pbc",
+  "hpc",
+  "iat",
+  "icall",
+  "_tmpl",
+  "req_",
+  "hpc_captcha",
+  "captcha_verify",
+]
+resolver = "2"
+
+[profile.release]
+lto = true
+opt-level = 3
+incremental = true
+codegen-units = 1
+overflow-checks = false
+debug-assertions = false
+# panic = 'abort'
+# strip = false
+
+[profile.dev]
+split-debuginfo = "unpacked"
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3
