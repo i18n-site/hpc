@@ -20,8 +20,6 @@ p >mail_or_phone
     @click={reset.call(this)}
     @click={signin(1)}
     @click={signin=1}
-    @submit|preventDefault=test
-    @submit|preventDefault
     src:url
     class:red=abc
     class:red
@@ -62,10 +60,13 @@ select(@change=change)
       i-h.F foot
   +else
     Wait
+form(@&form @submit)
+  u
 """
 pug = """
 MdTxt(@&M @click=xx md:md bind:xxx=md this={xx})
 i-h.F foot
+b(@&b class:Wait=!tip)
 """
 console.log pugHack(
   pug

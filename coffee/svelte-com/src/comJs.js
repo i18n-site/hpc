@@ -87,13 +87,13 @@ export default {
 
 			if (fileName.startsWith("custom-element")) {
 				chunk.code =
-					`import {DOC,tag} from '-/dom/_.js'\n` +
+					`import {DOC,Tag} from '-/dom/_.js'\n` +
 					chunk.code
 						.split("\n")
 						.filter((i) => !i.trimStart().startsWith("append_styles as "))
 						.join("\n")
 						.replaceAll("document", "DOC")
-						.replaceAll("DOC.createElement", "tag")
+						.replaceAll("DOC.createElement", "Tag")
 			}
 
 			let outname

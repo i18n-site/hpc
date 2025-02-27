@@ -52,7 +52,7 @@ pub async fn run<const BATCH_LIMIT: usize, Hpc: crate::Hpc, GenCaptcha: hpc_capt
     for i in set_header.iter() {
       if let Ok(header_name) = xerr::ok!(HeaderName::from_str(&i.0)) {
         if let Ok(header_val) = xerr::ok!(HeaderValue::from_str(&i.1)) {
-          response_header.insert(header_name, header_val);
+          response_header.append(header_name, header_val);
         }
       }
     }

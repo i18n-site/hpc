@@ -7,6 +7,7 @@ use std::{
 };
 
 use aok::Result;
+use icall::{CodeBody, State};
 
 pub trait GenCaptcha {
   fn get() -> impl Future<Output = Result<Vec<u8>>> + Send;
@@ -31,11 +32,14 @@ impl<G: GenCaptcha> Captcha<G> {
     }
   }
 
-  pub async fn get(&self) -> Result<Vec<u8>> {
+  pub async fn get(&self) -> Result<CodeBody, CodeBody> {
     if self.exist.swap(true, Ordering::SeqCst) {
-      Ok(vec![])
+      Ok((State::CAPTCHA, vec![]))
     } else {
-      G::get().await
+      match G::get().await {
+        Ok(bin) => Ok((State::CAPTCHA, bin)),
+        Err(err) => Err((State::MIDDLEWARE_ERROR, format!("captcha {err}").into())),
+      }
     }
   }
 }

@@ -9,6 +9,12 @@ import stylus from "./stylus.js"
 import svelteCustomElement from "./svelteCustomElement.js"
 import camel from '@3-/camel/lowCamel.js'
 
+const IGNORE_WARN = new Set([
+  'a11y-click-events-have-key-events',
+  'a11y_consider_explicit_label',
+  'a11y-missing-content'
+])
+
 export default async (src) => {
 	const entry = {},
 		root = dirname(src)
@@ -35,9 +41,15 @@ export default async (src) => {
 			comJs,
 			svelteCustomElement,
 			svelte({
+        onwarn: ({code, message})=>{
+          if(code == 'a11y-missing-attribute'){
+            return !message.includes('<a>')
+          }
+          return !IGNORE_WARN.has(code)
+        },
 				preprocess: [
           coffeePreprocessor, 
-          pug, 
+          pug(src), 
           stylus
         ],
 				compilerOptions,
