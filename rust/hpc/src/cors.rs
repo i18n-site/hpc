@@ -13,37 +13,40 @@ pub async fn cors(req: Request<Body>, next: Next) -> impl IntoResponse {
     .map(|i| i.to_str().map(|s| s.to_owned()));
 
   let is_options = req.method() == Method::OPTIONS;
-  if is_options {
+  let mut res = if is_options {
     let mut res = "".into_response();
     res.headers_mut().insert(
       header::ACCESS_CONTROL_MAX_AGE,
       HeaderValue::from_static("9999999"),
     );
-    let headers = res.headers_mut();
-
-    if let Some(Ok(origin)) = origin {
-      headers.insert(
-        header::ACCESS_CONTROL_ALLOW_ORIGIN,
-        HeaderValue::from_str(&origin).unwrap(),
-      );
-    }
-
-    headers.insert(
-      header::ACCESS_CONTROL_ALLOW_CREDENTIALS,
-      HeaderValue::from_static("true"),
-    );
-
-    headers.insert(
-      header::ACCESS_CONTROL_ALLOW_METHODS,
-      HeaderValue::from_static("PUT"),
-    );
-
-    headers.insert(
-      header::ACCESS_CONTROL_ALLOW_HEADERS,
-      HeaderValue::from_static("content-type,c"),
-    );
     res
   } else {
     next.run(req).await
+  };
+
+  let headers = res.headers_mut();
+
+  if let Some(Ok(origin)) = origin {
+    headers.insert(
+      header::ACCESS_CONTROL_ALLOW_ORIGIN,
+      HeaderValue::from_str(&origin).unwrap(),
+    );
   }
+
+  headers.insert(
+    header::ACCESS_CONTROL_ALLOW_CREDENTIALS,
+    HeaderValue::from_static("true"),
+  );
+
+  headers.insert(
+    header::ACCESS_CONTROL_ALLOW_METHODS,
+    HeaderValue::from_static("PUT"),
+  );
+
+  headers.insert(
+    header::ACCESS_CONTROL_ALLOW_HEADERS,
+    HeaderValue::from_static("content-type,c"),
+  );
+
+  res
 }
