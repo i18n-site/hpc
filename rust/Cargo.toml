@@ -7,7 +7,7 @@ members = [
   "_tmpl",
   "req_",
   "hpc_captcha",
-  "captcha_verify",
+  "captcha_verify", "cookie_b",
 ]
 resolver = "2"
 

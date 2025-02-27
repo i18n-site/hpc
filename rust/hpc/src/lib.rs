@@ -1,9 +1,9 @@
 pub use icall::CodeBody;
-
 mod hpc;
 pub use hpc::Hpc;
 
 mod call;
+
 pub use call::{
   call_err::{args_invalid, call_err},
   run,
@@ -19,11 +19,25 @@ pub fn args_decode<T: pb_jelly::Message>(args: &[u8], name: &str) -> Result<T> {
 }
 
 #[cfg(feature = "srv")]
-pub async fn srv(port: u16, router: axum::Router) -> aok::Result<()> {
+mod cors;
+
+#[cfg(feature = "srv")]
+pub async fn srv<H, T>(port: u16, router: axum::Router, path: &str, hpc: H) -> aok::Result<()>
+where
+  H: axum::handler::Handler<T, ()>,
+  T: 'static,
+{
   use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 
+  use axum::{Router, middleware, routing::put};
   use tokio::net::TcpListener;
   use tracing::info;
+
+  let hpc_router: Router = Router::new()
+    .route(path, put(hpc))
+    .layer(middleware::from_fn(cors::cors));
+
+  let router = axum_layer::layer(router.merge(hpc_router));
 
   info!("http://0.0.0.0:{}", port);
 

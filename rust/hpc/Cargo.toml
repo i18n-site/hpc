@@ -1,6 +1,6 @@
 [package]
 name = "hpc"
-version = "0.1.35"
+version = "0.1.36"
 edition = "2024"
 license = "MulanPSL-2.0"
 repository = "https://github.com/i18n-site/hpc.git"
@@ -31,6 +31,7 @@ req_ = { version = "0.1.30", features = ["set_header"], path = "../req_" }
 xerr = "0.1.15"
 cost_time = "0.1.2"
 hpc_captcha = { version = "0.1.0", path = "../hpc_captcha" }
+axum_layer = "0.1.8"
 
 [dev-dependencies]
 aok = "0.1.17"
