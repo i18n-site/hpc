@@ -32,6 +32,8 @@ async fn test_browser_id_middleware() -> Result<()> {
   assert!(cookie_str.contains("Path=/"));
   assert!(cookie_str.contains("HttpOnly"));
 
+  dbg!(cookie_str);
+
   // 提取 browser_id
   let browser_id = cookie_str
     .split(';')

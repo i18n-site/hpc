@@ -14,6 +14,10 @@ use axum::{
 #[derive(Clone)]
 pub struct BrowserIdLayer;
 
+pub fn browser_id_layer() -> BrowserIdLayer {
+  BrowserIdLayer::new()
+}
+
 impl Default for BrowserIdLayer {
   fn default() -> Self {
     Self::new()
@@ -24,13 +28,13 @@ impl BrowserIdLayer {
   pub fn new() -> Self {
     Self
   }
+}
 
-  fn generate_browser_id() -> String {
-    let mut rng = StdRng::from_rng(&mut rand::rng());
-    let mut bytes = [0u8; 16];
-    rng.fill_bytes(&mut bytes);
-    hex::encode(bytes)
-  }
+fn browser_id() -> String {
+  let mut rng = StdRng::from_rng(&mut rand::rng());
+  let mut bytes = [0u8; 16];
+  rng.fill_bytes(&mut bytes);
+  ub64::b64e(bytes)
 }
 
 impl<S> Layer<S> for BrowserIdLayer {
@@ -69,7 +73,7 @@ where
       .unwrap_or(false);
 
     let browser_id = if !has_browser_id {
-      let id = BrowserIdLayer::generate_browser_id();
+      let id = browser_id();
       let cookie = format!("b={}", id);
       request
         .headers_mut()
@@ -92,8 +96,4 @@ where
       Ok(response)
     })
   }
-}
-
-pub fn browser_id_layer() -> BrowserIdLayer {
-  BrowserIdLayer::new()
 }
