@@ -1,6 +1,6 @@
 [package]
 name = "hpc"
-version = "0.1.39"
+version = "0.1.40"
 edition = "2024"
 license = "MulanPSL-2.0"
 repository = "https://github.com/i18n-site/hpc.git"
@@ -32,7 +32,7 @@ xerr = "0.1.15"
 cost_time = "0.1.2"
 hpc_captcha = { version = "0.1.0", path = "../hpc_captcha" }
 axum_layer = "0.1.8"
-cookie_b = { version = "0.1.1", path = "../cookie_b" }
+cookie_b = { version = "0.1.2", path = "../cookie_b" }
 
 [dev-dependencies]
 aok = "0.1.17"
