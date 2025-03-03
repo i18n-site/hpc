@@ -1,0 +1,42 @@
+[features]
+default = []
+user = ["dep:xkv"]
+cookie = ["dep:cookie"]
+set_header = ["dep:append-only-vec"]
+captcha = ["dep:captcha_verify", "dep:icall", "dep:hpc_captcha"]
+
+[dependencies]
+cookie = { version = "0.18.1", optional = true }
+append-only-vec = { version = "0.1.7", optional = true }
+aok = "0.1.17"
+bumpalo = { version = "3.17.0" }
+dashmap = "6.1.0"
+xkv = { version = "0.1.44", features = ["r"], optional = true }
+http = "1.2.0"
+parking_lot = "0.12.3"
+tokio = { version = "1.43.0", features = ["sync", "macros", "test-util"] }
+xerr = "0.1.15"
+tracing = "0.1.41"
+captcha_verify = { version = "0.1.3", path = "../captcha_verify", optional = true }
+icall = { version = "0.1.46", path = "../icall", optional = true }
+hpc_captcha = { version = "0.1.2", path = "../hpc_captcha", optional = true }
+
+[package]
+name = "req_"
+version = "0.1.31"
+edition = "2024"
+license = "MulanPSL-2.0"
+repository = "https://github.com/i18n-site/hpc.git"
+homepage = "https://github.com/i18n-site/hpc/tree/dev/rust/req_"
+description = "Extract message form headers only once for one request ( support async and sync ) / 一个请求只提取一次消息, 支持异步和同步"
+keywords = ["bumpalo", "headers", "http", "req"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[dev-dependencies]
+aok = "0.1.17"
+loginit = "0.1.18"
+static_init = "1.0.3"
+tracing = "0.1.41"

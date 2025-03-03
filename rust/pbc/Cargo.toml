@@ -1,0 +1,33 @@
+[package]
+name = "pbc"
+version = "0.1.23"
+edition = "2024"
+license = "MulanPSL-2.0"
+repository = "https://github.com/i18n-site/hpc.git"
+homepage = "https://github.com/i18n-site/hpc/tree/dev/rust/pbc"
+description = "generate crate from protobuf / 由 protobuf 生成 rust crate ( base on pb-jelly-gen / 基于 pb-jelly-gen )"
+keywords = ["pb-jelly", "pb-jelly-gen", "protobuf", "gen", "proto"]
+
+[features]
+default = []
+
+[package.metadata.docs.rs]
+all-features = true
+
+[dependencies]
+aok = "0.1.17"
+clap = { version = "4.5.31", features = ["derive"] }
+ifs = { version = "0.1.44", features = ["fs"] }
+pb-jelly-gen = "0.0.17"
+tempfile = "3.17.1"
+walkdir = "2.5.0"
+
+[dev-dependencies]
+aok = "0.1.17"
+loginit = "0.1.18"
+static_init = "1.0.3"
+tracing = "0.1.41"
+
+[dev-dependencies.tokio]
+version = "1.43.0"
+features = ["macros", "rt", "rt-multi-thread", "time", "sync"]

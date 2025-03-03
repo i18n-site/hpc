@@ -1,0 +1,15 @@
+[package]
+name = "iat"
+version = "0.1.2"
+edition = "2024"
+license = "MulanPSL-2.0"
+repository = "https://github.com/i18n-site/hpc.git"
+homepage = "https://github.com/i18n-site/hpc/tree/dev/rust/iat"
+description = "iat for hpc"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+quote = "1.0.39"
+syn = { version = "2.0.99", features = ["full"] }

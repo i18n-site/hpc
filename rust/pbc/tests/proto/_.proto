@@ -1,0 +1,13 @@
+/**
+ * rust crate function enum id
+ */
+
+syntax = "proto3";
+
+enum Func {
+  None = 0;
+
+  AuthSignupMail = 1;
+  AuthSignupMailVerify = 2;
+  Captcha = 3;
+}
