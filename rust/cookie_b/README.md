@@ -136,7 +136,7 @@ impl Cookie<'_> {
     let key = key.as_ref();
     let val = val.as_ref();
     let cookie = format!(
-      "{key}={val};Max-Age=#{max_age};Domain={};Secure;HttpOnly;Path=/;Partitioned",
+      "{key}={val};Max-Age={max_age};Domain={};Secure;HttpOnly;Path=/;Partitioned",
       self.domain
     );
     if let Ok(cookie) = cookie.parse() {
