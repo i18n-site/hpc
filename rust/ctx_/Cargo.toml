@@ -1,9 +1,15 @@
 [features]
-default = []
-user = ["dep:xkv", "dep:ub64", "dep:intbin", "dep:cookie_b", "dep:xbin"]
-cookie = ["dep:cookie"]
-set_header = ["dep:append-only-vec"]
-captcha = ["dep:captcha_verify", "dep:hpc_captcha"]
+default = [ ]
+user = [
+"dep:xkv",
+"dep:ub64",
+"dep:intbin",
+"dep:cookie_b",
+"dep:xbin"
+]
+cookie = [ "dep:cookie" ]
+set_header = [ "dep:append-only-vec" ]
+captcha = [ "dep:captcha_verify", "dep:hpc_captcha" ]
 
 [dependencies]
 aok = "0.1.17"
@@ -26,12 +32,12 @@ version = "3.17.0"
 
 [dependencies.xkv]
 version = "0.1.44"
-features = ["r"]
+features = [ "r" ]
 optional = true
 
 [dependencies.tokio]
 version = "1.43.0"
-features = ["sync", "macros", "test-util"]
+features = [ "sync", "macros", "test-util" ]
 
 [dependencies.captcha_verify]
 version = "0.1.4"
@@ -56,7 +62,7 @@ version = "0.1.2"
 optional = true
 
 [dependencies.cookie_b]
-version = "0.1.7"
+version = "0.1.9"
 path = "../cookie_b"
 optional = true
 
@@ -72,11 +78,11 @@ license = "MulanPSL-2.0"
 repository = "https://github.com/i18n-site/hpc.git"
 homepage = "https://github.com/i18n-site/hpc/tree/dev/rust/ctx_"
 description = "Extract message form headers only once for one req ( support async and sync ) / 一个请求只提取一次消息, 支持异步和同步"
-keywords = ["bumpalo", "headers", "http", "req"]
+keywords = [ "bumpalo", "headers", "http", "req" ]
 
 [package.metadata.docs.rs]
 all-features = true
-rustdoc-args = ["--cfg", "docsrs"]
+rustdoc-args = [ "--cfg", "docsrs" ]
 
 [dev-dependencies]
 aok = "0.1.17"

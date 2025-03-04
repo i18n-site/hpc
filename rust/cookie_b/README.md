@@ -14,7 +14,7 @@ use tower::{Layer, Service};
 use rand::{RngCore, SeedableRng, rngs::StdRng};
 use axum::{
   body::Body,
-  http::{HeaderMap, Request, Response},
+  http::{Request, Response},
 };
 
 #[derive(Clone)]
@@ -119,36 +119,14 @@ where
     if let Some(host) = host {
       Box::pin(async move {
         let mut response = future.await?;
-        let mut cookie = Cookie {
-          domain: xtld::host_tld(host),
-          headers: response.headers_mut(),
-        };
+        let mut cookie = cookie_set::new(xtld::host_tld(host), response.headers_mut());
         // r如果没了就自动给b续期，防止b过期消失(chrome的cookie最长有效期400天)
-        cookie.set("b", ub64::b64e(browser_bin), 99999999);
+        cookie.set_max("b", ub64::b64e(browser_bin));
         cookie.set("r", "", 999999);
         Ok(response)
       })
     } else {
       Box::pin(future)
-    }
-  }
-}
-
-pub struct Cookie<'a> {
-  pub domain: String,
-  pub headers: &'a mut HeaderMap,
-}
-
-impl Cookie<'_> {
-  fn set(&mut self, key: impl AsRef<str>, val: impl AsRef<str>, max_age: u64) {
-    let key = key.as_ref();
-    let val = val.as_ref();
-    let cookie = format!(
-      "{key}={val};Max-Age={max_age};Domain={};Secure;HttpOnly;Path=/;Partitioned",
-      self.domain
-    );
-    if let Ok(cookie) = cookie.parse() {
-      self.headers.append("set-cookie", cookie);
     }
   }
 }
