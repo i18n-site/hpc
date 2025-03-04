@@ -1,4 +1,8 @@
 use aok::Result;
+use xkv::{
+  R,
+  fred::interfaces::{KeysInterface, SortedSetsInterface},
+};
 use xbin::concat;
 use cookie_b::Browser;
 
@@ -9,6 +13,9 @@ pub struct User {
   pub bin: Box<[u8]>,
 }
 
+/// https://developer.chrome.com/blog/cookie-max-age-expires?hl=zh-cn
+pub const COOKIE_EXPIRE: i64 = 86400 * 400;
+
 impl Extract for User {
   async fn from_ctx(ctx: &Ctx) -> Result<Self> {
     let bin: Box<[u8]>;
@@ -16,22 +23,40 @@ impl Extract for User {
 
     let req = &ctx.req;
 
-    if let Some(uid) = req.headers().get("content-type")
-      && let Ok(uid) = uid.to_str()
-      && uid != "#"
-      && let Ok(uid_bin) = ub64::b64d(uid)
-      && let Some(browser) = req.extensions().get::<Browser>()
-    {
-      bin = uid_bin.into();
-      id = intbin::bin_u64(&bin);
-      let key = concat!(b"B:", browser.bin);
-      if browser.renew {
-        dbg!("renew");
+    #[allow(clippy::never_loop)]
+    loop {
+      if let Some(uid) = req.headers().get("content-type")
+        && let Ok(uid) = uid.to_str()
+        && uid != "#"
+        && let Ok(uid_bin) = ub64::b64d(uid)
+        && let Some(browser) = req.extensions().get::<Browser>()
+      {
+        /*
+          uid : ts
+
+          ts 按上次登录时间时间排序
+          ts 小于 0 为退出登录
+        */
+        let key = concat!(b"B:", browser.bin);
+
+        let score: Option<u64> = R.zscore(key, &uid_bin[..]).await?;
+
+        if let Some(score) = score
+          && score > 0
+        {
+          bin = uid_bin.into();
+          id = intbin::bin_u64(&bin);
+          if browser.renew {
+            R!(expire key,COOKIE_EXPIRE,None);
+          }
+          break;
+        }
       }
-    } else {
       bin = Box::new([]);
       id = 0;
-    };
+      break;
+    }
+
     Ok(Self { id, bin })
   }
 }

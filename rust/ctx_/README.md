@@ -10,10 +10,11 @@ Extract message form headers only once for one req ( support async / sync )
 
 
 ```rust
+use axum::{body::Body, extract::Request};
 use aok::{OK, Result};
-use http::{HeaderMap, HeaderName, HeaderValue};
-use ctx_::{Cookie, Req};
 use tokio::time::{Duration, sleep};
+use ctx_::{Cookie, Ctx};
+use http::Method;
 use tracing::info;
 
 #[static_init::constructor(0)]
@@ -23,22 +24,14 @@ extern "C" fn init() {
 
 #[tokio::test]
 async fn test() -> Result<()> {
-  let mut headers = HeaderMap::new();
-
-  let header_array = [
-    ("cookie", "session_id=12345; user_id=67890"),
-    ("content-type", "application/json"),
-  ];
-
-  for (name, value) in &header_array {
-    headers.insert(
-      HeaderName::from_static(name),
-      HeaderValue::from_static(value),
-    );
-  }
+  let request = Request::builder()
+    .method(Method::POST)
+    .uri("/my/path")
+    .header("cookie", "session_id=12345; user_id=67890")
+    .body(Body::empty())?;
 
   {
-    let req: Req = headers.into();
+    let req: Ctx = request.into();
     let req = &req;
 
     async {
