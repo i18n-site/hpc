@@ -6,10 +6,10 @@ license = "MulanPSL-2.0"
 repository = "https://github.com/i18n-site/hpc.git"
 homepage = "https://github.com/i18n-site/hpc/tree/dev/rust/cookie_b"
 description = "cookie_b"
-keywords = []
+keywords = [ ]
 
 [package.metadata.docs.rs]
-rustdoc-args = ["--cfg", "docsrs"]
+rustdoc-args = [ "--cfg", "docsrs" ]
 all-features = true
 
 [dev-dependencies]
@@ -17,11 +17,12 @@ aok = "0.1.17"
 loginit = "0.1.18"
 static_init = "1.0.3"
 tracing = "0.1.41"
-tokio = { version = "1.43.0", features = ["full"] }
 http = "1.2.0"
 hyper = "1.6.0"
 
-[features]
+[dev-dependencies.tokio]
+version = "1.43.0"
+features = [ "full" ]
 
 [dependencies]
 axum = "0.8.1"
