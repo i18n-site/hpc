@@ -24,7 +24,10 @@ impl Extract for User {
     {
       bin = uid_bin.into();
       id = intbin::bin_u64(&bin);
-      let key = concat!(b"u:", bin);
+      let key = concat!(b"B:", browser.bin);
+      if browser.renew {
+        dbg!("renew");
+      }
     } else {
       bin = Box::new([]);
       id = 0;

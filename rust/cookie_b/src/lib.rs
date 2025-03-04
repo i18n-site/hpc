@@ -17,7 +17,7 @@ use axum::{
 #[derive(Clone)]
 pub struct BrowserIdLayer;
 
-fn gen_browser_id() -> [u8; 16] {
+fn gen_browser_bin() -> [u8; 16] {
   let mut rng = StdRng::from_rng(&mut rand::rng());
   let mut bytes = [0u8; 16];
   rng.fill_bytes(&mut bytes);
@@ -39,7 +39,7 @@ pub struct BrowserIdService<S> {
 
 #[derive(Clone)]
 pub struct Browser {
-  pub id: [u8; 16],
+  pub bin: [u8; 16],
   pub renew: bool,
 }
 
@@ -68,37 +68,37 @@ where
       .split(";");
 
     let mut no_refresh = true;
-    let mut cookie_browser_id = None;
+    let mut cookie_browser_bin = None;
 
     for i in cookie_li {
       let i = i.trim_start();
       if let Some(b) = i.strip_prefix("b=") {
-        cookie_browser_id = Some(b.to_owned());
+        cookie_browser_bin = Some(b.to_owned());
       } else if i == COOKIE_REFRESH {
         no_refresh = false;
-        if cookie_browser_id.is_some() {
+        if cookie_browser_bin.is_some() {
           break;
         }
       }
     }
 
-    let no_browser_id = cookie_browser_id.is_none();
-    let browser_id;
+    let no_browser_bin = cookie_browser_bin.is_none();
+    let browser_bin;
 
     #[allow(clippy::never_loop)]
     loop {
-      if let Some(cookie_browser_id) = cookie_browser_id
-        && let Ok(id) = ub64::b64d(&cookie_browser_id)
+      if let Some(cookie_browser_bin) = cookie_browser_bin
+        && let Ok(id) = ub64::b64d(&cookie_browser_bin)
         && let Ok::<[u8; 16], _>(id) = id.try_into()
       {
-        browser_id = id;
+        browser_bin = id;
         break;
       }
-      browser_id = gen_browser_id();
+      browser_bin = gen_browser_bin();
       break;
     }
 
-    let host = if (no_browser_id || no_refresh)
+    let host = if (no_browser_bin || no_refresh)
       && let Ok(host) = xerr::ok!(header_host(headers))
     {
       Some(host.to_owned())
@@ -107,8 +107,8 @@ where
     };
 
     request.extensions_mut().insert(Browser {
-      id: browser_id,
-      renew: no_refresh && !no_browser_id,
+      bin: browser_bin,
+      renew: no_refresh && !no_browser_bin,
     });
 
     let future = self.inner.call(request);
@@ -121,7 +121,7 @@ where
           headers: response.headers_mut(),
         };
         // r如果没了就自动给b续期，防止b过期消失(chrome的cookie最长有效期400天)
-        cookie.set("b", ub64::b64e(browser_id), 99999999);
+        cookie.set("b", ub64::b64e(browser_bin), 99999999);
         cookie.set("r", "", 999999);
         Ok(response)
       })
