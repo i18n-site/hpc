@@ -19,7 +19,7 @@ pub fn args_decode<T: pb_jelly::Message>(args: &[u8], name: &str) -> Result<T> {
 }
 
 #[cfg(feature = "srv")]
-mod cors;
+mod header;
 
 #[cfg(feature = "srv")]
 pub async fn srv<H, T>(port: u16, router: axum::Router, path: &str, hpc: H) -> aok::Result<()>
@@ -35,7 +35,7 @@ where
 
   let hpc_router: Router = Router::new()
     .route(path, put(hpc))
-    .layer(middleware::from_fn(cors::cors))
+    .layer(middleware::from_fn(header::set))
     .layer(cookie_b::BrowserIdLayer);
 
   let router = axum_layer::layer(router.merge(hpc_router));

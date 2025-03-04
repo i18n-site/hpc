@@ -6,7 +6,7 @@ use axum::{
   response::IntoResponse,
 };
 
-pub async fn cors(req: Request<Body>, next: Next) -> impl IntoResponse {
+pub async fn set(req: Request<Body>, next: Next) -> impl IntoResponse {
   let origin = req
     .headers()
     .get(header::ORIGIN)
@@ -25,6 +25,8 @@ pub async fn cors(req: Request<Body>, next: Next) -> impl IntoResponse {
   };
 
   let headers = res.headers_mut();
+
+  headers.remove(header::CONTENT_TYPE);
 
   if let Some(Ok(origin)) = origin {
     headers.insert(
