@@ -40,6 +40,7 @@ pub struct BrowserIdService<S> {
 #[derive(Clone)]
 pub struct Browser {
   pub id: [u8; 16],
+  pub renew: bool,
 }
 
 const COOKIE_REFRESH: &str = "r=";
@@ -105,7 +106,10 @@ where
       None
     };
 
-    request.extensions_mut().insert(Browser { id: browser_id });
+    request.extensions_mut().insert(Browser {
+      id: browser_id,
+      renew: no_refresh && !no_browser_id,
+    });
 
     let future = self.inner.call(request);
 

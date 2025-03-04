@@ -1,3 +1,4 @@
+#![feature(let_chains)]
 #![feature(doc_auto_cfg)]
 #![feature(doc_cfg)]
 
@@ -5,14 +6,14 @@ use std::any::TypeId;
 
 use bumpalo::Bump;
 use dashmap::DashMap;
-use http::HeaderMap;
+use axum::extract::Request;
 use parking_lot::Mutex;
 
-pub struct Req {
-  pub headers: HeaderMap,
+pub struct Ctx {
+  pub req: Request,
   /*
-   * 使用 Bump 分配器管理 request 生命周期内的内存。
-   * Uses Bump allocator to manage memory within the request lifecycle.
+   * 使用 Bump 分配器管理 req 生命周期内的内存。
+   * Uses Bump allocator to manage memory within the req lifecycle.
    */
   pub bump: Mutex<Bump>,
   /*
@@ -24,16 +25,16 @@ pub struct Req {
   pub cache: DashMap<TypeId, usize>,
 }
 
-impl Req {
+impl Ctx {
   pub fn has<T: 'static>(&self) -> bool {
     self.cache.contains_key(&TypeId::of::<T>())
   }
 }
 
-impl From<HeaderMap> for Req {
-  fn from(headers: HeaderMap) -> Self {
+impl From<Request> for Ctx {
+  fn from(req: Request) -> Self {
     Self {
-      headers,
+      req,
       bump: Default::default(),
       cache: DashMap::new(),
     }

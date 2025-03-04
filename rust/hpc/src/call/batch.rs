@@ -1,14 +1,14 @@
 use futures::stream::{FuturesOrdered, StreamExt};
 use hpc_captcha::{Captcha, GenCaptcha};
 use icall::{BinLi, State};
-use req_::Req;
+use ctx_::Ctx;
 
 use crate::Hpc;
 
 pub async fn batch<H: Hpc, const BATCH_LIMIT: usize, G: GenCaptcha>(
   func_id_li: Vec<u32>,
   args_li: Vec<Vec<u8>>,
-  req: &Req,
+  req: &Ctx,
   captcha: &Captcha<G>,
 ) -> BinLi {
   let len = func_id_li.len();

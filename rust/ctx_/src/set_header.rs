@@ -2,7 +2,7 @@ use std::{fmt, ops::Deref};
 
 use append_only_vec::AppendOnlyVec;
 
-use crate::{Req, sync::Extract};
+use crate::{Ctx, sync::Extract};
 
 pub const SET_COOKIE: &str = "Set-Cookie";
 
@@ -37,7 +37,7 @@ impl fmt::Debug for SetHeader {
 }
 
 impl Extract for SetHeader {
-  fn from_req(_: &Req) -> Self {
+  fn from_ctx(_: &Ctx) -> Self {
     Default::default()
   }
 }

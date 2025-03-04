@@ -1,8 +1,5 @@
 use aok::{OK, Result};
-use http::{HeaderMap, HeaderName, HeaderValue};
-use req_::{Cookie, Req};
-use tokio::time::{Duration, sleep};
-use tracing::info;
+use axum::extract::Request;
 
 #[static_init::constructor(0)]
 extern "C" fn init() {
@@ -26,19 +23,19 @@ async fn test() -> Result<()> {
   }
 
   {
-    let req: Req = headers.into();
+    let req: Ctx = request.into();
     let req = &req;
 
     async {
       sleep(Duration::from_secs(2)).await;
-      let cookie: &Cookie = req_::sync::get(req);
+      let cookie: &Cookie = ctx_::sync::get(req);
       info!("{}", cookie);
     }
     .await;
 
     async {
       sleep(Duration::from_secs(1)).await;
-      let cookie: &Cookie = req_::sync::get(req);
+      let cookie: &Cookie = ctx_::sync::get(req);
       info!("{}", cookie);
     }
     .await;

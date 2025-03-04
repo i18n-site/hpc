@@ -1,6 +1,6 @@
 use std::{collections::HashMap, fmt, ops::Deref};
 
-use crate::{Req, sync::Extract};
+use crate::{Ctx, sync::Extract};
 
 pub struct Cookie(HashMap<String, String>);
 
@@ -25,12 +25,12 @@ impl fmt::Debug for Cookie {
 }
 
 impl Extract for Cookie {
-  fn from_req(req: &Req) -> Self {
+  fn from_ctx(ctx: &Ctx) -> Self {
     use cookie::Cookie;
 
     let mut inner = HashMap::new();
 
-    if let Some(cookie) = req.headers.get("cookie") {
+    if let Some(cookie) = ctx.req.headers().get("cookie") {
       // dbg!(cookie);
       if let Ok(cookie) = xerr::ok!(cookie.to_str()) {
         for cookie in Cookie::split_parse(cookie) {

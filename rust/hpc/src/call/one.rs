@@ -1,6 +1,6 @@
 use hpc_captcha::{Captcha, GenCaptcha};
 use icall::BinLi;
-use req_::Req;
+use ctx_::Ctx;
 
 use super::miss_func;
 use crate::Hpc;
@@ -8,7 +8,7 @@ use crate::Hpc;
 pub async fn one<H: Hpc, G: GenCaptcha>(
   func_id: u32,
   args: &[u8],
-  req: &Req,
+  req: &Ctx,
   captcha: &mut Captcha<G>,
 ) -> BinLi {
   let r = match H::Func::try_from(func_id) {

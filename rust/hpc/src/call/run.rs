@@ -2,21 +2,22 @@ use std::str::FromStr;
 
 use axum::{
   body,
-  http::{HeaderMap, HeaderName, HeaderValue, StatusCode},
+  extract::Request,
+  http::{HeaderName, HeaderValue, StatusCode},
   response::{IntoResponse, Response},
 };
 use hpc_captcha::Captcha;
 use icall::{BinLi, CallLi, State};
 use pb_jelly::Message;
-use req_::{Req, SetHeader};
+use ctx_::{Ctx, SetHeader};
 
 use super::{batch, one};
 
 pub async fn run<const BATCH_LIMIT: usize, Hpc: crate::Hpc, GenCaptcha: hpc_captcha::GenCaptcha>(
-  headers: HeaderMap,
+  request: Request,
   body: body::Bytes,
 ) -> Response {
-  let req: Req = headers.into();
+  let req: Ctx = request.into();
 
   let mut captcha = Captcha::<GenCaptcha>::new();
 
@@ -37,7 +38,7 @@ pub async fn run<const BATCH_LIMIT: usize, Hpc: crate::Hpc, GenCaptcha: hpc_capt
   let mut response = (StatusCode::OK, body::Bytes::from(bin_li.serialize_to_vec())).into_response();
   if req.has::<SetHeader>() {
     let response_header = response.headers_mut();
-    let set_header: &SetHeader = req_::sync::get(&req);
+    let set_header: &SetHeader = ctx_::sync::get(&req);
     for i in set_header.iter() {
       if let Ok(header_name) = xerr::ok!(HeaderName::from_str(&i.0)) {
         if let Ok(header_val) = xerr::ok!(HeaderValue::from_str(&i.1)) {

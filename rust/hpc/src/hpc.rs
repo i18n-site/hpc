@@ -3,20 +3,20 @@ use std::future::Future;
 use hpc_captcha::{Captcha, GenCaptcha};
 use icall::CodeBody;
 use pb_jelly::ClosedProtoEnum;
-use req_::Req;
+use ctx_::Ctx;
 
 pub trait Hpc {
   type Func: TryFrom<u32> + ClosedProtoEnum + Copy;
 
   fn run<G: GenCaptcha>(
-    req: &Req,
+    req: &Ctx,
     func: Self::Func,
     args: &[u8],
     captcha: &Captcha<G>,
   ) -> impl Future<Output = crate::Result<CodeBody>>;
 
   fn run_with_log<G: GenCaptcha>(
-    req: &Req,
+    req: &Ctx,
     func: Self::Func,
     args: &[u8],
     captcha: &Captcha<G>,
