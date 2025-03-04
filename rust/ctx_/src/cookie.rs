@@ -30,7 +30,7 @@ impl Extract for Cookie {
 
     let mut inner = HashMap::new();
 
-    if let Some(cookie) = ctx.req.headers().get("cookie") {
+    if let Some(cookie) = ctx.req.headers.get("cookie") {
       // dbg!(cookie);
       if let Ok(cookie) = xerr::ok!(cookie.to_str()) {
         for cookie in Cookie::split_parse(cookie) {

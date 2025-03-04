@@ -10,11 +10,10 @@ Extract message form headers only once for one req ( support async / sync )
 
 
 ```rust
-use axum::{body::Body, extract::Request};
 use aok::{OK, Result};
 use tokio::time::{Duration, sleep};
 use ctx_::{Cookie, Ctx};
-use http::Method;
+use http::{Method, Request};
 use tracing::info;
 
 #[static_init::constructor(0)]
@@ -28,7 +27,9 @@ async fn test() -> Result<()> {
     .method(Method::POST)
     .uri("/my/path")
     .header("cookie", "session_id=12345; user_id=67890")
-    .body(Body::empty())?;
+    .body(())?;
+
+  let (request, _) = request.into_parts();
 
   {
     let req: Ctx = request.into();

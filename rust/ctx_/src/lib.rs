@@ -6,11 +6,11 @@ use std::any::TypeId;
 
 use bumpalo::Bump;
 use dashmap::DashMap;
-use axum::extract::Request;
 use parking_lot::Mutex;
+use http::request::Parts;
 
 pub struct Ctx {
-  pub req: Request,
+  pub req: Parts,
   /*
    * 使用 Bump 分配器管理 req 生命周期内的内存。
    * Uses Bump allocator to manage memory within the req lifecycle.
@@ -31,8 +31,8 @@ impl Ctx {
   }
 }
 
-impl From<Request> for Ctx {
-  fn from(req: Request) -> Self {
+impl From<Parts> for Ctx {
+  fn from(req: Parts) -> Self {
     Self {
       req,
       bump: Default::default(),

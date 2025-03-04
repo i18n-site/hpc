@@ -23,12 +23,11 @@ hpc_captcha = { version = "0.1.2", path = "../hpc_captcha", optional = true }
 ub64 = { version = "0.1.11", optional = true }
 intbin = { version = "0.1.2", optional = true }
 cookie_b = { version = "0.1.5", path = "../cookie_b", optional = true }
-axum = "0.8.1"
 xbin = { version = "0.1.6", optional = true }
 
 [package]
 name = "ctx_"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2024"
 license = "MulanPSL-2.0"
 repository = "https://github.com/i18n-site/hpc.git"

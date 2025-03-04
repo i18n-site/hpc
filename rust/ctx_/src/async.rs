@@ -25,7 +25,7 @@ pub async fn get<T: Extract + 'static>(ctx: &Ctx) -> Result<&T> {
   match cell.get_or_try_init(|| T::from_ctx(ctx)).await {
     Ok(r) => Ok(r),
     Err(e) => {
-      tracing::error!("{:?}", ctx.req.headers());
+      tracing::error!("{:?}", ctx.req.headers);
       Err(e)
     }
   }

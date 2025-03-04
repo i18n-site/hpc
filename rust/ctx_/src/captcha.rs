@@ -9,7 +9,7 @@ pub struct Captcha(pub bool);
 
 impl Extract for Captcha {
   async fn from_ctx(ctx: &Ctx) -> Result<Self> {
-    Ok(Self(captcha_verify(ctx.req.headers()).await))
+    Ok(Self(captcha_verify(&ctx.req.headers).await))
   }
 }
 
