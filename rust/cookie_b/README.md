@@ -119,10 +119,16 @@ where
     if let Some(host) = host {
       Box::pin(async move {
         let mut response = future.await?;
-        let mut cookie = cookie_set::new(xtld::host_tld(host), response.headers_mut());
+        let headers = response.headers_mut();
+        let cookie = cookie_set::new(xtld::host_tld(host));
         // r如果没了就自动给b续期，防止b过期消失(chrome的cookie最长有效期400天)
-        cookie.set_max("b", ub64::b64e(browser_bin));
-        cookie.set("r", "", 999999);
+        for val in [
+          cookie.set_max("b", ub64::b64e(browser_bin)),
+          cookie.set("r", "", 999999),
+        ] {
+          headers.append("Set-Cookie", val);
+        }
+
         Ok(response)
       })
     } else {
