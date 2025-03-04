@@ -27,6 +27,7 @@ pub async fn set(req: Request<Body>, next: Next) -> impl IntoResponse {
   let headers = res.headers_mut();
 
   headers.remove(header::CONTENT_TYPE);
+  headers.remove(header::DATE);
 
   if let Some(Ok(origin)) = origin {
     headers.insert(
