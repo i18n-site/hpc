@@ -70,7 +70,7 @@ where
     let mut cookie_browser_id = None;
 
     for i in cookie_li {
-      if let Some(b) = i.strip_prefix("b=") {
+      if let Some(b) = i.trim_start().strip_prefix("b=") {
         cookie_browser_id = Some(b.to_owned());
       } else if i == COOKIE_REFRESH {
         no_refresh = false;
