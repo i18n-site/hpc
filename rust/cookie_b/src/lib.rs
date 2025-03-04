@@ -124,7 +124,9 @@ where
           cookie.set_max("b", ub64::b64e(browser_bin)),
           cookie.set("r", "", 999999),
         ] {
-          headers.append(SET_COOKIE, val);
+          if let Ok(val) = xerr::ok!(val.parse()) {
+            headers.append(SET_COOKIE, val);
+          }
         }
 
         Ok(response)
