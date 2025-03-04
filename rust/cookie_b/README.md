@@ -9,6 +9,7 @@ use std::{
   task::{Context, Poll},
 };
 
+use set_cookie::SET_COOKIE;
 use header_host::header_host;
 use tower::{Layer, Service};
 use rand::{RngCore, SeedableRng, rngs::StdRng};
@@ -120,13 +121,13 @@ where
       Box::pin(async move {
         let mut response = future.await?;
         let headers = response.headers_mut();
-        let cookie = cookie_set::new(xtld::host_tld(host));
+        let cookie = set_cookie::new(xtld::host_tld(host));
         // r如果没了就自动给b续期，防止b过期消失(chrome的cookie最长有效期400天)
         for val in [
           cookie.set_max("b", ub64::b64e(browser_bin)),
           cookie.set("r", "", 999999),
         ] {
-          headers.append("Set-Cookie", val);
+          headers.append(SET_COOKIE, val);
         }
 
         Ok(response)
