@@ -1,5 +1,6 @@
 use std::any::TypeId;
 
+use icall::CodeBody;
 use aok::Result;
 use tokio::sync::OnceCell;
 
@@ -9,7 +10,7 @@ pub trait Extract: Sized {
   fn from_ctx(ctx: &Ctx) -> impl Future<Output = Result<Self>>;
 }
 
-pub async fn get<T: Extract + 'static>(ctx: &Ctx) -> Result<&T> {
+pub async fn get<T: Extract + 'static>(ctx: &Ctx) -> Result<&T, CodeBody> {
   let ptr = *ctx
     .cache
     .entry(TypeId::of::<T>())
@@ -26,7 +27,7 @@ pub async fn get<T: Extract + 'static>(ctx: &Ctx) -> Result<&T> {
     Ok(r) => Ok(r),
     Err(e) => {
       tracing::error!("{:?}", ctx.req.headers);
-      Err(e)
+      Err((icall::State::CALL_ERROR, e.to_string().as_bytes().into()))
     }
   }
 }
