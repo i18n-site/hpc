@@ -1,6 +1,6 @@
 [package]
 name = "hpc"
-version = "0.1.44"
+version = "0.1.46"
 edition = "2024"
 license = "MulanPSL-2.0"
 repository = "https://github.com/i18n-site/hpc.git"
@@ -27,7 +27,7 @@ axum = { version = "0.8.1" }
 futures = "0.3.31"
 pb-jelly = "0.0.17"
 icall = { version = "0.1.10", path = "../icall" }
-ctx_ = { version = "0.1.0", features = ["set_header"], path = "../ctx_" }
+ctx_ = { version = "0.1.1", features = ["set_header"], path = "../ctx_" }
 xerr = "0.1.15"
 cost_time = "0.1.2"
 hpc_captcha = { version = "0.1.0", path = "../hpc_captcha" }
