@@ -25,7 +25,7 @@ impl hpc::Hpc for Hpc {
   type Func = Func;
 
   async fn run<G: GenCaptcha>(
-    req: &req_::Req, func: Func, args: &[u8], captcha: &Captcha<G>
+    ctx: &ctx_::Ctx, func: Func, args: &[u8], captcha: &Captcha<G>
   ) -> hpc::Result<CodeBody> {
     Ok(match func {
 

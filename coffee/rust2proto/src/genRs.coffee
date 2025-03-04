@@ -66,7 +66,7 @@ export default (
   mod_func = """#{proto_name}::#{sub_mod}#{func_name}"""
 
   if has_captcha
-    rsRunPush "  req_::captcha(req,captcha).await?;\n"
+    rsRunPush "  ctx_::captcha(ctx,captcha).await?;\n"
 
   if args_id
     rsRunPush """  let args: pb::#{proto_name}::#{up_func_name}Args = args_decode(args,"#{proto_name}::#{up_func_name}")?;\n"""
@@ -80,8 +80,8 @@ export default (
     if name_req_get
       [name, req_get] = name_req_get
       rsRunPush '  let '+name+' = '+(
-        if req_get == 'http::header::map::HeaderMap' then '&req.headers' else \
-        if req_get == 'req_::set_header::SetHeader' then 'req_::sync::get(req) 'else 'req_::get(req).await?'
+        if req_get == 'http::header::map::HeaderMap' then '&ctx.req.headers' else \
+        if req_get == 'ctx_::set_header::SetHeader' then 'ctx_::sync::get(ctx) 'else 'ctx_::get(ctx).await?'
       ) + ';\n'
       args.push '&'+name
     else

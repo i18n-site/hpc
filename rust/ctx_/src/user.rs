@@ -1,3 +1,5 @@
+use std::fmt::Debug;
+
 use aok::Result;
 use xkv::{
   R,
@@ -11,6 +13,21 @@ use crate::{Ctx, Extract};
 pub struct User {
   pub id: u64,
   pub bin: Box<[u8]>,
+}
+
+impl User {
+  pub fn new(id: u64) -> Self {
+    Self {
+      id,
+      bin: intbin::u64_bin(id),
+    }
+  }
+}
+
+impl Debug for User {
+  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    f.write_str(format!("User:{}", self.id).as_str())
+  }
 }
 
 /// https://developer.chrome.com/blog/cookie-max-age-expires?hl=zh-cn
