@@ -56,7 +56,7 @@ impl Extract for User {
         */
         let key = concat([b"bU:", &browser.bin[..]]);
 
-        let score: Option<u64> = R.zscore(&key[..], &uid_bin[..]).await?;
+        let score: Option<i64> = R.zscore(&key[..], &uid_bin[..]).await?;
 
         if let Some(score) = score
           && score > 0

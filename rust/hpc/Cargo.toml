@@ -35,7 +35,7 @@ version = "0.1.46"
 path = "../icall"
 
 [dependencies.ctx_]
-version = "0.1.6"
+version = "0.1.7"
 features = [ "set_header" ]
 path = "../ctx_"
 
