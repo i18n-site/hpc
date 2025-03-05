@@ -22,5 +22,5 @@ tracing = "0.1.41"
 aok = "0.1.17"
 
 [dependencies.ih]
-version = "0.1.2"
+version = "0.1.4"
 path = "../ih"

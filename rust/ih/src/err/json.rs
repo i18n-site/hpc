@@ -66,8 +66,16 @@ impl FnOnce<()> for Json {
 }
 
 #[macro_export]
-macro_rules! err {
-  ($mod:ident $code:ident) => {
-    err($crate::err::$mod::$code);
+macro_rules! json_err {
+  () => {
+    let mut json_err = $crate::json();
+    macro_rules! err {
+      ($mod:ident $code:ident) => {
+        json_err(stringify!($mod), $crate::err::$mod::$code);
+      };
+      () => {
+        json_err()?;
+      };
+    }
   };
 }
