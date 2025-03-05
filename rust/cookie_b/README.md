@@ -93,8 +93,8 @@ where
         cookie_browser_bin = Some(b.to_owned());
       } else if i == COOKIE_REFRESH {
         no_refresh = false;
-      } else if i.starts_with("u=") {
-        cookie_u = Some(i[2..].to_owned());
+      } else if let Some(i) = i.strip_prefix("u=") {
+        cookie_u = Some(i.to_owned());
       }
     }
 
