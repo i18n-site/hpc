@@ -12,7 +12,7 @@
 use aok::anyhow;
 use dstr::dvec;
 use hpc::{call_err, args_decode};
-use icall::{CodeBody,State};
+use ih::{CodeBody,State};
 use hpc_captcha::{Captcha, GenCaptcha};
 use pb::Func;
 use pb_jelly::Message;
