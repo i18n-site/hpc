@@ -10,14 +10,13 @@ use std::{
   task::{Context, Poll},
 };
 
-use set_cookie::SET_COOKIE;
-use header_host::header_host;
-use tower::{Layer, Service};
-use rand::{RngCore, SeedableRng, rngs::StdRng};
 use axum::{
   body::Body,
   http::{Request, Response},
 };
+use rand::{RngCore, SeedableRng, rngs::StdRng};
+use set_cookie::SET_COOKIE;
+use tower::{Layer, Service};
 
 #[derive(Clone)]
 pub struct BrowserIdLayer;
@@ -115,7 +114,7 @@ where
     }
 
     let host = if (no_browser_bin || no_refresh)
-      && let Ok(host) = xerr::ok!(header_host(headers))
+      && let Ok(host) = xerr::ok!(header_host::tld(headers))
     {
       Some(host.to_owned())
     } else {
@@ -133,7 +132,7 @@ where
       Box::pin(async move {
         let mut response = future.await?;
         let headers = response.headers_mut();
-        let cookie = set_cookie::new(xtld::host_tld(host));
+        let cookie = set_cookie::new(host);
         // r如果没了就自动给b续期，防止b过期消失(chrome的cookie最长有效期400天)
         for val in [
           cookie.set_max("b", ub64::b64e(browser_bin)),

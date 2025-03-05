@@ -1,6 +1,6 @@
 [package]
 name = "cookie_b"
-version = "0.1.17"
+version = "0.1.19"
 edition = "2024"
 license = "MulanPSL-2.0"
 repository = "https://github.com/i18n-site/hpc.git"
@@ -26,10 +26,9 @@ features = ["full"]
 
 [dependencies]
 axum = "0.8.1"
-header_host = "0.1.1"
+header_host = { version = "0.1.5", features = ["tld"] }
 rand = "0.9.0"
 set_cookie = "0.1.7"
 tower = "0.5.2"
 ub64 = "0.1.11"
 xerr = "0.1.15"
-xtld = "0.1.5"
