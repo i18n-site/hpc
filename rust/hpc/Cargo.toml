@@ -35,7 +35,7 @@ version = "0.1.1"
 path = "../ih"
 
 [dependencies.ctx_]
-version = "0.1.7"
+version = "0.1.8"
 features = [ "set_header" ]
 path = "../ctx_"
 
