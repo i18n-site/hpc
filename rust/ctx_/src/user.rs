@@ -54,7 +54,7 @@ impl Extract for User {
           ts 按上次登录时间时间排序
           ts 小于 0 为退出登录
         */
-        let key = concat([b"B:", &browser.bin[..]]);
+        let key = concat([b"bU:", &browser.bin[..]]);
 
         let score: Option<u64> = R.zscore(&key[..], &uid_bin[..]).await?;
 
