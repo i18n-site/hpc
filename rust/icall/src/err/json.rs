@@ -1,4 +1,4 @@
-use std::fmt;
+use std::{borrow::Borrow, fmt};
 
 use pb_jelly::Message;
 use sonic_rs::{Serialize, to_string};
@@ -22,13 +22,13 @@ impl Json {
   pub fn set<V: Serialize>(
     &mut self,
     key: impl AsRef<str>,
-    val: impl AsRef<V>,
+    val: impl Borrow<V>,
   ) -> sonic_rs::Result<()> {
     let inner = &mut self.inner;
     inner.push(if inner.is_empty() { '{' } else { ',' });
     self.inner += &to_string(key.as_ref())?;
     self.inner.push(':');
-    self.inner += &to_string(val.as_ref())?;
+    self.inner += &to_string(val.borrow())?;
     Ok(())
   }
 
