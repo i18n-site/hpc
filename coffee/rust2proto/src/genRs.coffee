@@ -80,6 +80,7 @@ export default (
     if name_req_get
       [name, req_get] = name_req_get
       rsRunPush '  let '+name+' = '+(
+        if req_get == 'cookie_b::Browser' then 'ctx.req.extensions.get().unwrap()' else \
         if req_get == 'http::header::map::HeaderMap' then '&ctx.req.headers' else \
         if req_get == 'ctx_::set_header::SetHeader' then 'ctx_::sync::get(ctx) 'else 'ctx_::get(ctx).await?'
       ) + ';\n'

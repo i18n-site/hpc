@@ -44,7 +44,7 @@ version = "0.1.3"
 path = "../hpc_captcha"
 
 [dependencies.cookie_b]
-version = "0.1.13"
+version = "0.1.15"
 path = "../cookie_b"
 
 [dev-dependencies]

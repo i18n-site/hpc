@@ -4,6 +4,7 @@
 #![feature(let_chains)]
 
 use std::{
+  fmt::Debug,
   future::Future,
   pin::Pin,
   task::{Context, Poll},
@@ -45,6 +46,16 @@ pub struct BrowserIdService<S> {
 pub struct Browser {
   pub bin: [u8; 16],
   pub renew: bool,
+}
+
+impl Debug for Browser {
+  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    f.write_str(&format!(
+      "Browser:{}(renew:{})",
+      ub64::b64e(self.bin),
+      self.renew
+    ))
+  }
 }
 
 const COOKIE_REFRESH: &str = "r=";
