@@ -19,17 +19,16 @@ pub fn json() -> Json {
 }
 
 impl Json {
-  pub fn set<V: Serialize>(
-    &mut self,
-    key: impl AsRef<str>,
-    val: impl Borrow<V>,
-  ) -> sonic_rs::Result<()> {
-    let inner = &mut self.inner;
-    inner.push(if inner.is_empty() { '{' } else { ',' });
-    self.inner += &to_string(key.as_ref())?;
-    self.inner.push(':');
-    self.inner += &to_string(val.borrow())?;
-    Ok(())
+  pub fn set<V: Serialize>(&mut self, key: impl AsRef<str>, val: impl Borrow<V>) {
+    if let Ok(key) = xerr::ok!(to_string(key.as_ref())) {
+      if let Ok(val) = xerr::ok!(to_string(val.borrow())) {
+        let inner = &mut self.inner;
+        inner.push(if inner.is_empty() { '{' } else { ',' });
+        self.inner += &key;
+        self.inner.push(':');
+        self.inner += &val;
+      }
+    }
   }
 
   pub fn end(mut self) -> anyhow::Result<()> {
