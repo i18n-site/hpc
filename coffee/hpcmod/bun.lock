@@ -5,7 +5,7 @@
       "name": "hpcmod",
       "dependencies": {
         "@3-/write": "^0.0.2",
-        "@3-/ymlid": "^0.1.2",
+        "@3-/ymlid": "^0.1.3",
       },
     },
   },
@@ -14,7 +14,7 @@
 
     "@3-/write": ["@3-/write@0.0.2", "", {}, "sha512-eFLP3Vsh66Xhw4hYsiYUOBaH/Gciu1DNfWeJTN9MO/yNZB6cg1LvtnxNF9nwOoAzT4oaCLmT0jjFe5J96//Zew=="],
 
-    "@3-/ymlid": ["@3-/ymlid@0.1.2", "", { "dependencies": { "@3-/read": "^0.1.4", "@3-/write": "^0.0.2", "js-yaml": "^4.1.0" } }, "sha512-4jnU99gw+FJKU12djY9Z68/GENLJCop4zvC55zNbLM6Kosdwps5hnCO3Dgzw1TaXQdAn8QCM1/tyPfug3CacPw=="],
+    "@3-/ymlid": ["@3-/ymlid@0.1.3", "", { "dependencies": { "@3-/read": "^0.1.4", "@3-/write": "^0.0.2", "js-yaml": "^4.1.0" } }, "sha512-x517lLsRD7EE+L3dZlpwub/SLhureuTimvWtdIJr8Nok14x62KPLWu+Oeaue2zvbcw6H8qZGqiYU0eUEAemSDQ=="],
 
     "argparse": ["argparse@2.0.1", "", {}, "sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q=="],
 

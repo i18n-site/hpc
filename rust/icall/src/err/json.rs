@@ -39,3 +39,16 @@ impl Json {
     Err(self)?
   }
 }
+
+impl<K: AsRef<str>, V: Serialize> FnMut<(K, V)> for Json {
+  extern "rust-call" fn call_mut(&mut self, args: (K, V)) -> Self::Output {
+    self.set(args.0, args.1);
+  }
+}
+
+impl<K: AsRef<str>, V: Serialize> FnOnce<(K, V)> for Json {
+  type Output = ();
+  extern "rust-call" fn call_once(self, args: (K, V)) -> Self::Output {
+    unimplemented!()
+  }
+}
