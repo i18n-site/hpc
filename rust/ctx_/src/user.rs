@@ -1,6 +1,6 @@
 use std::fmt::Debug;
 
-use aok::Result;
+use aok::{OK, Result};
 use xkv::{
   R,
   fred::interfaces::{KeysInterface, SortedSetsInterface},
@@ -54,9 +54,9 @@ impl Extract for User {
           ts 按上次登录时间时间排序
           ts 小于 0 为退出登录
         */
-        let key = concat!(b"B:", browser.bin);
+        let key = concat([b"B:", &browser.bin[..]]);
 
-        let score: Option<u64> = R.zscore(key, &uid_bin[..]).await?;
+        let score: Option<u64> = R.zscore(&key[..], &uid_bin[..]).await?;
 
         if let Some(score) = score
           && score > 0
@@ -64,7 +64,10 @@ impl Extract for User {
           bin = uid_bin.into();
           id = intbin::bin_u64(&bin);
           if browser.renew {
-            R!(expire key,COOKIE_EXPIRE,None);
+            tokio::spawn(async move {
+              R!(expire & key[..], COOKIE_EXPIRE, None);
+              OK
+            });
           }
           break;
         }
