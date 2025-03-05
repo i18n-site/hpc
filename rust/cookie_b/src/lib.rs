@@ -82,15 +82,16 @@ where
     let mut no_refresh = true;
     let mut cookie_browser_bin = None;
 
+    let mut cookie_u = None;
+
     for i in cookie_li {
       let i = i.trim_start();
       if let Some(b) = i.strip_prefix("b=") {
         cookie_browser_bin = Some(b.to_owned());
       } else if i == COOKIE_REFRESH {
         no_refresh = false;
-        if cookie_browser_bin.is_some() {
-          break;
-        }
+      } else if i.starts_with("u=") {
+        cookie_u = Some(i[2..].to_owned());
       }
     }
 
@@ -137,6 +138,12 @@ where
         ] {
           if let Ok(val) = xerr::ok!(val.parse()) {
             headers.append(SET_COOKIE, val);
+          }
+        }
+        if let Some(cookie_u) = cookie_u {
+          let cookie_u = cookie.set_max_for_js("u", cookie_u);
+          if let Ok(cookie_u) = xerr::ok!(cookie_u.parse()) {
+            headers.append(SET_COOKIE, cookie_u);
           }
         }
 

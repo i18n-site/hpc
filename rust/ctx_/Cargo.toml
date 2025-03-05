@@ -62,7 +62,7 @@ version = "0.1.2"
 optional = true
 
 [dependencies.cookie_b]
-version = "0.1.15"
+version = "0.1.16"
 path = "../cookie_b"
 optional = true
 
