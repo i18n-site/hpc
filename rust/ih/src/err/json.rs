@@ -67,11 +67,11 @@ impl FnOnce<()> for Json {
 
 #[macro_export]
 macro_rules! json_err {
-  () => {
+  ($this:ident) => {
     let mut json_err = $crate::json();
     macro_rules! err {
       ($mod:ident $code:ident) => {
-        json_err(stringify!($mod), $crate::err::$mod::$code);
+        json_err(stringify!($mod), $this::err::$mod::$code);
       };
       () => {
         json_err()?;
