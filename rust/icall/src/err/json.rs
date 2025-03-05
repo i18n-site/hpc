@@ -12,8 +12,6 @@ impl fmt::Display for Json {
   }
 }
 
-impl std::error::Error for Json {}
-
 pub fn json() -> Json {
   Default::default()
 }
@@ -30,14 +28,6 @@ impl Json {
       }
     }
   }
-
-  pub fn end(mut self) -> anyhow::Result<()> {
-    if self.inner.is_empty() {
-      return Ok(());
-    }
-    self.inner.push('}');
-    Err(self)?
-  }
 }
 
 impl<K: AsRef<str>, V: Serialize> FnMut<(K, V)> for Json {
@@ -49,6 +39,28 @@ impl<K: AsRef<str>, V: Serialize> FnMut<(K, V)> for Json {
 impl<K: AsRef<str>, V: Serialize> FnOnce<(K, V)> for Json {
   type Output = ();
   extern "rust-call" fn call_once(self, _args: (K, V)) -> Self::Output {
+    unimplemented!()
+  }
+}
+
+impl std::error::Error for Json {}
+
+impl FnMut<()> for Json {
+  extern "rust-call" fn call_mut(&mut self, args: ()) -> Self::Output {
+    if self.inner.is_empty() {
+      return Ok(());
+    }
+    let mut err = Json {
+      inner: std::mem::take(&mut self.inner),
+    };
+    err.inner.push('}');
+    Err(err.into())
+  }
+}
+
+impl FnOnce<()> for Json {
+  type Output = anyhow::Result<()>;
+  extern "rust-call" fn call_once(self, _args: ()) -> Self::Output {
     unimplemented!()
   }
 }
