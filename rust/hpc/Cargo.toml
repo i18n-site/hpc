@@ -31,7 +31,7 @@ features = [ "macros", "net", "rt", "rt-multi-thread" ]
 version = "0.8.1"
 
 [dependencies.icall]
-version = "0.1.51"
+version = "0.1.52"
 path = "../icall"
 
 [dependencies.ctx_]
