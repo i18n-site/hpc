@@ -1,4 +1,4 @@
-use icall::{BinLi, State};
+use ih::{BinLi, State};
 
 mod batch;
 pub(crate) use batch::batch;

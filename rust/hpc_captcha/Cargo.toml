@@ -21,6 +21,6 @@ tracing = "0.1.41"
 [dependencies]
 aok = "0.1.17"
 
-[dependencies.icall]
-version = "0.1.53"
-path = "../icall"
+[dependencies.ih]
+version = "0.1.1"
+path = "../ih"

@@ -30,9 +30,9 @@ features = [ "macros", "net", "rt", "rt-multi-thread" ]
 [dependencies.axum]
 version = "0.8.1"
 
-[dependencies.icall]
-version = "0.1.53"
-path = "../icall"
+[dependencies.ih]
+version = "0.1.1"
+path = "../ih"
 
 [dependencies.ctx_]
 version = "0.1.7"

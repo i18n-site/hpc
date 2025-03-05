@@ -1,4 +1,4 @@
-pub use icall::CodeBody;
+pub use ih::CodeBody;
 mod hpc;
 pub use hpc::Hpc;
 

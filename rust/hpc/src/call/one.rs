@@ -1,5 +1,5 @@
 use hpc_captcha::{Captcha, GenCaptcha};
-use icall::BinLi;
+use ih::BinLi;
 use ctx_::Ctx;
 
 use super::miss_func;

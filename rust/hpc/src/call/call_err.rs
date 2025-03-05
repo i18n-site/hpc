@@ -1,6 +1,6 @@
 use aok::Error;
 use hpc_captcha::{Captcha, GenCaptcha};
-use icall::{CodeBody, State};
+use ih::{CodeBody, State};
 use tracing::warn;
 
 pub async fn call_err<G: GenCaptcha>(
@@ -9,7 +9,7 @@ pub async fn call_err<G: GenCaptcha>(
   captcha: &Captcha<G>,
   get_args: impl FnOnce() -> String,
 ) -> Result<CodeBody, CodeBody> {
-  match icall::err::try_into(err.into()) {
+  match ih::err::try_into(err.into()) {
     Ok(r) => {
       if r.0 == State::CAPTCHA {
         return captcha.get().await;

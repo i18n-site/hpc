@@ -1,7 +1,7 @@
 use std::future::Future;
 
 use hpc_captcha::{Captcha, GenCaptcha};
-use icall::CodeBody;
+use ih::CodeBody;
 use pb_jelly::ClosedProtoEnum;
 use ctx_::Ctx;
 

@@ -1,11 +1,11 @@
 [package]
-name = "icall"
-version = "0.1.53"
+name = "ih"
+version = "0.1.1"
 edition = "2024"
 license = "MulanPSL-2.0"
 repository = "https://github.com/i18n-site/hpc.git"
-homepage = "https://github.com/i18n-site/hpc/tree/dev/rust/icall"
-description = "call interface proto for hpc"
+homepage = "https://github.com/i18n-site/hpc/tree/dev/rust/ih"
+description = "interface proto for hpc"
 
 [features]
 default = ["err_code", "err_json", "err_bin"]

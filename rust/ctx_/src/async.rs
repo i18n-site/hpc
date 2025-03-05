@@ -1,6 +1,6 @@
 use std::any::TypeId;
 
-use icall::CodeBody;
+use ih::CodeBody;
 use aok::Result;
 use tokio::sync::OnceCell;
 
@@ -27,7 +27,7 @@ pub async fn get<T: Extract + 'static>(ctx: &Ctx) -> Result<&T, CodeBody> {
     Ok(r) => Ok(r),
     Err(e) => {
       tracing::error!("{:?}", ctx.req.headers);
-      Err((icall::State::CALL_ERROR, e.to_string().as_bytes().into()))
+      Err((ih::State::CALL_ERROR, e.to_string().as_bytes().into()))
     }
   }
 }

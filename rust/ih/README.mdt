@@ -1,6 +1,4 @@
-# icall
-
-call interface proto for hpc
+# ih : interface proto for hpc
 
 ```rust
 <+ ./proto/_.proto>

@@ -64,3 +64,10 @@ impl FnOnce<()> for Json {
     unimplemented!()
   }
 }
+
+#[macro_export]
+macro_rules! err {
+  ($mod:ident $code:ident) => {
+    err($crate::err::$mod::$code);
+  };
+}

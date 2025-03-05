@@ -1,6 +1,6 @@
 use futures::stream::{FuturesOrdered, StreamExt};
 use hpc_captcha::{Captcha, GenCaptcha};
-use icall::{BinLi, State};
+use ih::{BinLi, State};
 use ctx_::Ctx;
 
 use crate::Hpc;

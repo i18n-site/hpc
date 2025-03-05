@@ -44,9 +44,9 @@ version = "0.1.4"
 path = "../captcha_verify"
 optional = true
 
-[dependencies.icall]
-version = "0.1.53"
-path = "../icall"
+[dependencies.ih]
+version = "0.1.1"
+path = "../ih"
 
 [dependencies.hpc_captcha]
 version = "0.1.3"

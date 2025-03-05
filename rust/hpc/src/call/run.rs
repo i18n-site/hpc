@@ -9,7 +9,7 @@ use axum::{
 };
 use ctx_::{Ctx, SetHeader};
 use hpc_captcha::Captcha;
-use icall::{BinLi, CallLi, State};
+use ih::{BinLi, CallLi, State};
 use pb_jelly::Message;
 
 use super::{batch, one};

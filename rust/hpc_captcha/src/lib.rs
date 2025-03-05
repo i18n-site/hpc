@@ -4,7 +4,7 @@ use std::{
 };
 
 use aok::Result;
-use icall::{CodeBody, State};
+use ih::{CodeBody, State};
 
 pub trait GenCaptcha {
   fn get() -> impl Future<Output = Result<Vec<u8>>> + Send;
