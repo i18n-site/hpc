@@ -59,6 +59,11 @@ await do =>
     'bytes'
   ]
 
+  # T2 Err Code Li
+  jsTypeId [
+    'repeated uint32'
+  ]
+
   proto2str = new Map
   rs_run = []
   for [crate, proto_name] from crate2proto.entries()
