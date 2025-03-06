@@ -1,0 +1,41 @@
+{
+  "lockfileVersion": 1,
+  "workspaces": {
+    "": {
+      "name": "rust2proto",
+      "dependencies": {
+        "@3-/camel": "^0.1.1",
+        "@3-/protoscript": "^0.0.50",
+        "@3-/read": "^0.1.4",
+        "@3-/snake": "^0.0.3",
+        "@3-/utf8": "^0.0.4",
+        "@3-/write": "^0.0.2",
+        "js-yaml": "^4.1.0",
+        "zx": "^8.4.0",
+      },
+    },
+  },
+  "packages": {
+    "@3-/camel": ["@3-/camel@0.1.1", "", {}, "sha512-VKlJalDhw3xHOFt8lQ8lfj1usGDxaS9ua1BWp6L8yusMwwf5Zl+xQaxdIVaIkep8wmz9tqrXycXLYU62bXGX/w=="],
+
+    "@3-/protoscript": ["@3-/protoscript@0.0.50", "", { "dependencies": { "@3-/snake": "^0.0.3", "@3-/utf8": "^0.0.4", "google-protobuf": "^3.21.2", "prettier": "^3.0.3" }, "bin": { "protoscript": "dist/cli/index.js" } }, "sha512-D+CvbkzoFzCMbsI31xeG3sKrBdDn1sybyWhZZ1CytvcXO//Dk4k0WsQNaUHVXwq1DrHZmS8EQ1gqbgTB6b0rKQ=="],
+
+    "@3-/read": ["@3-/read@0.1.4", "", {}, "sha512-PZDRfIFuaFNAW6VjWupa7+g/3GbhES6shAgETN/RXtTdJxcIwl9HSBMy2sdfRqAc/FUeUJFL3F8PfpsdZbC8xg=="],
+
+    "@3-/snake": ["@3-/snake@0.0.3", "", {}, "sha512-l6oWGlD/zqrblyue9uXbFK+h9EPE8J2rM5O6BobG/YnxyWMI9z5sCbWq6wRShSBCIOvcJeg93wbcGTsvO2rsjw=="],
+
+    "@3-/utf8": ["@3-/utf8@0.0.4", "", {}, "sha512-hoVIOCX70JteiRPzRZ8Yw51kb/H9dWxx55oW+RQ38hHE8+/uOIriJZ024HhCYaLDKykUyDoknRbzKjjMQ++new=="],
+
+    "@3-/write": ["@3-/write@0.0.2", "", {}, "sha512-eFLP3Vsh66Xhw4hYsiYUOBaH/Gciu1DNfWeJTN9MO/yNZB6cg1LvtnxNF9nwOoAzT4oaCLmT0jjFe5J96//Zew=="],
+
+    "argparse": ["argparse@2.0.1", "", {}, "sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q=="],
+
+    "google-protobuf": ["google-protobuf@3.21.4", "", {}, "sha512-MnG7N936zcKTco4Jd2PX2U96Kf9PxygAPKBug+74LHzmHXmceN16MmRcdgZv+DGef/S9YvQAfRsNCn4cjf9yyQ=="],
+
+    "js-yaml": ["js-yaml@4.1.0", "", { "dependencies": { "argparse": "^2.0.1" }, "bin": { "js-yaml": "bin/js-yaml.js" } }, "sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA=="],
+
+    "prettier": ["prettier@3.4.2", "", { "bin": { "prettier": "bin/prettier.cjs" } }, "sha512-e9MewbtFo+Fevyuxn/4rrcDAaq0IYxPGLvObpQjiZBMAzB9IGmzlnG9RZy3FFas+eBMu2vA0CszMeduow5dIuQ=="],
+
+    "zx": ["zx@8.4.0", "", { "bin": { "zx": "build/cli.js" } }, "sha512-b5+gbUT0akQ5vVuBuHgp0viQx2ZYCuooVD41Z7g47sN0diLsAvB2XteHcp5lec90CNEQ9o7TkXsE3ksaJrZHGw=="],
+  }
+}

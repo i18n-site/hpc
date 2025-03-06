@@ -1,0 +1,9 @@
+# tmpl_
+
+[src/mod.coffee](./src/mod.coffee) :
+
+```coffee
+<+ ./src/mod.coffee >
+```
+
+<+ ../../about.md >

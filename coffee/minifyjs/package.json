@@ -1,0 +1,25 @@
+{
+  "name": "@3-/minifyjs",
+  "version": "0.1.4",
+  "type": "module",
+  "exports": {
+    ".": "./mod.js",
+    "./*": "./*"
+  },
+  "files": [
+    "./*"
+  ],
+  "dependencies": {
+    "@putout/plugin-esm": "^2.3.0",
+    "@swc/core": "^1.11.7",
+    "eslint-plugin-prefer-arrow-functions": "^3.6.2",
+    "putout": "^38.5.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/i18n-site/hpc.git"
+  },
+  "homepage": "https://github.com/i18n-site/hpc/tree/dev/coffee/minifyjs",
+  "author": "i18n.site@gmail.com",
+  "license": "Apache-2.0"
+}

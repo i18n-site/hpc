@@ -1,0 +1,20 @@
+{
+  "name": "_tmpl",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/i18n-site/hpc.git"
+  },
+  "homepage": "https://github.com/i18n-site/hpc/tree/dev/coffee/_tmpl",
+  "author": "i18n.site@gmail.com",
+  "license": "MulanPSL-2.0",
+  "exports": {
+    ".": "./lib/mod.js",
+    "./*": "./lib/*"
+  },
+  "files": [
+    "lib/*"
+  ],
+  "scripts": {},
+  "type": "module"
+}

@@ -1,0 +1,34 @@
+{
+  "name": "rust2proto",
+  "version": "0.1.13",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/i18n-site/hpc.git"
+  },
+  "homepage": "https://github.com/i18n-site/hpc/tree/dev/coffee/rust2proto",
+  "author": "i18n.site@gmail.com",
+  "license": "MulanPSL-2.0",
+  "exports": {
+    ".": "./lib/lib.js",
+    "./*": "./lib/*"
+  },
+  "files": [
+    "lib/*"
+  ],
+  "bin": {
+    "rust2proto": "./lib/gen.js"
+  },
+  "devDependencies": {},
+  "scripts": {},
+  "type": "module",
+  "dependencies": {
+    "@3-/camel": "^0.1.1",
+    "@3-/protoscript": "^0.0.50",
+    "@3-/read": "^0.1.4",
+    "@3-/snake": "^0.0.3",
+    "@3-/utf8": "^0.0.4",
+    "@3-/write": "^0.0.2",
+    "js-yaml": "^4.1.0",
+    "zx": "^8.4.0"
+  }
+}

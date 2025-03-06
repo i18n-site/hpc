@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+message CallLi
+{
+  repeated uint32 func_li = 1;
+  repeated bytes args_li = 2;
+}
+
+message BinLi
+{
+  repeated uint32 state_li = 1;
+  repeated bytes bin_li = 2;
+}
+
+enum State {
+  OK = 0;
+
+  JSON = 1;
+  CODE = 2;
+  CODE_LI = 3;
+  BIN = 4;
+
+  CAPTCHA = 10;
+  NEED_SIGNIN = 11;
+  NO_PERMISSION = 12;
+
+  MISS_FUNC = 100;
+  ARGS_INVALID = 101;
+  BATCH_LIMIT = 102;
+  CALL_ERROR = 103;
+  MIDDLEWARE_ERROR = 104;
+}
+
+message Code
+{
+  uint32 inner = 1;
+}
+
+message CodeLi
+{
+  repeated uint32 li = 1;
+}
+
+message Json
+{
+  string inner = 1;
+}
+
+message Bin
+{
+  bytes inner = 1;
+}
+
+message Captcha
+{
+  bytes id = 1;
+  bytes img = 2;
+  bytes tip = 3;
+}

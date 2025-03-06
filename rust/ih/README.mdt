@@ -1,0 +1,7 @@
+# ih : interface proto for hpc
+
+```rust
+<+ ./proto/_.proto>
+```
+
+<+ ../about.md >

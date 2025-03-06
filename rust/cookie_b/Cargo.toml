@@ -1,0 +1,34 @@
+[package]
+name = "cookie_b"
+version = "0.1.19"
+edition = "2024"
+license = "MulanPSL-2.0"
+repository = "https://github.com/i18n-site/hpc.git"
+homepage = "https://github.com/i18n-site/hpc/tree/dev/rust/cookie_b"
+description = "cookie_b"
+keywords = []
+
+[package.metadata.docs.rs]
+rustdoc-args = ["--cfg", "docsrs"]
+all-features = true
+
+[dev-dependencies]
+aok = "0.1.17"
+loginit = "0.1.18"
+static_init = "1.0.3"
+tracing = "0.1.41"
+http = "1.2.0"
+hyper = "1.6.0"
+
+[dev-dependencies.tokio]
+version = "1.43.0"
+features = ["full"]
+
+[dependencies]
+axum = "0.8.1"
+header_host = { version = "0.1.5", features = ["tld"] }
+rand = "0.9.0"
+set_cookie = "0.1.7"
+tower = "0.5.2"
+ub64 = "0.1.11"
+xerr = "0.1.15"

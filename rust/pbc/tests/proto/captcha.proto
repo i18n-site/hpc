@@ -1,0 +1,13 @@
+/**
+ * ## function
+ * *. captcha() → Captcha
+ */
+
+syntax = "proto3";
+package captcha;
+
+message Captcha {
+  bytes id = 1;
+  bytes img = 2;
+  bytes tip = 3;
+}

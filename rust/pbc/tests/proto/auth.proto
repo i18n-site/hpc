@@ -1,0 +1,24 @@
+/**
+ * ## function
+ * *. signup_mail(SignupMailArgs)
+ * *. signup_mail_verify(SignupMailVerifyArgs) → SignupMailVerify
+ */
+
+syntax = "proto3";
+package auth;
+
+message SignupMailArgs {
+  string address = 1;
+  string password = 2;
+}
+
+message SignupMailVerifyArgs {
+  string address = 1;
+  string code = 2;
+}
+
+enum SignupMailVerify {
+  OK = 0;
+  INVALID_ADDRESS = 1;
+  PASSWORD_TOO_SHORT = 2;
+}

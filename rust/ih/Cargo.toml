@@ -1,0 +1,39 @@
+[package]
+name = "ih"
+version = "0.1.15"
+edition = "2024"
+license = "MulanPSL-2.0"
+repository = "https://github.com/i18n-site/hpc.git"
+homepage = "https://github.com/i18n-site/hpc/tree/dev/rust/ih"
+description = "interface proto for hpc"
+
+[features]
+default = ["err_code", "err_json", "err_bin", "err_code_li"]
+err_json = ["dep:sonic-rs", "dep:xerr", "err"]
+err_code_li = ["err"]
+err_bin = ["err"]
+err_code = ["err"]
+err = ["dep:anyhow"]
+
+[package.metadata.docs.rs]
+all-features = true
+
+[dependencies]
+anyhow = { version = "1.0.97", optional = true }
+lazy_static = "1.5.0"
+pb-jelly = "0.0.17"
+sonic-rs = { version = "0.3.17", optional = true }
+xerr = { version = "0.1.15", optional = true }
+
+[dev-dependencies]
+aok = "0.1.17"
+loginit = "0.1.18"
+static_init = "1.0.3"
+tracing = "0.1.41"
+
+[dev-dependencies.tokio]
+version = "1.43.0"
+features = ["macros", "rt", "rt-multi-thread", "time", "sync"]
+
+[package.metadata.cargo-machete]
+ignored = ["lazy_static"]

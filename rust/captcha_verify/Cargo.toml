@@ -1,0 +1,15 @@
+[package]
+name = "captcha_verify"
+version = "0.1.4"
+edition = "2024"
+license = "MulanPSL-2.0"
+repository = "https://github.com/i18n-site/hpc.git"
+homepage = "https://github.com/i18n-site/hpc/tree/dev/rust/captcha_verify"
+description = "captcha_verify"
+
+[dependencies]
+http = "1.2.0"
+ub64 = "0.1.11"
+xbin = "0.1.6"
+xerr = "0.1.15"
+xkv = { version = "0.1.44", features = ["r"] }

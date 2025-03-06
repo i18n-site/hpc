@@ -1,0 +1,16 @@
+# ctx_
+
+Use arena memory allocation bumpalo
+
+Extract message form headers only once for one req ( support async / sync )
+
+使用 arena 内存分配器 bumpalo
+
+一个请求只提取一次消息, 支持异步 / 同步
+
+
+```rust
+<+ ./tests/main.rs>
+```
+
+<+ ../about.md >

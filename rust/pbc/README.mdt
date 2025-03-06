@@ -1,0 +1,18 @@
+# pbc
+
+generate rust crate from protobuf file
+
+base on [pb-jelly-gen](https://crates.io/crates/pb-jelly-gen)
+
+由 protobuf 生成 rust crate
+
+基于 pb-jelly-gen
+
+use:
+
+```
+cargo install pbc
+pbc -c protobuf_file_dir # default is current dir
+```
+
+<+ ../about.md >
