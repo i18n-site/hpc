@@ -37,11 +37,11 @@ impl CodeLi {
 
 #[macro_export]
 macro_rules! err_code_li {
-  ($this:ident) => {
-    let mut err_code_li = $crate::code_li();
+  ($mod:ident) => {
+    let mut err_code_li = $crate::err::code_li();
     macro_rules! err {
-      ($mod:ident $code:ident) => {
-        err_code_li.push($this::err::$mod::$code);
+      ($kind:ident $code:ident) => {
+        err_code_li.push($mod::err::$kind::$code);
       };
       () => {
         err_code_li.throw()?;

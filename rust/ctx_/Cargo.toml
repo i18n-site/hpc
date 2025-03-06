@@ -45,7 +45,7 @@ path = "../captcha_verify"
 optional = true
 
 [dependencies.ih]
-version = "0.1.12"
+version = "0.1.13"
 path = "../ih"
 
 [dependencies.hpc_captcha]

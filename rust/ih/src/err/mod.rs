@@ -24,14 +24,22 @@ pub fn try_into(err: anyhow::Error) -> Result<CodeBody> {
 
 #[cfg(feature = "err_code_li")]
 pub mod code_li;
+#[cfg(feature = "err_code_li")]
+pub use code_li::code_li;
 
 #[cfg(feature = "err_code")]
 pub mod code;
+#[cfg(feature = "err_code")]
+pub use code::code;
 
 #[cfg(feature = "err_json")]
 pub mod json;
+#[cfg(feature = "err_json")]
+pub use json::json;
 
 #[cfg(feature = "err_bin")]
 pub mod bin;
+#[cfg(feature = "err_bin")]
+pub use bin::bin;
 
 pub mod state;

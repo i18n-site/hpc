@@ -32,4 +32,4 @@ pub type CodeBody = (State, Vec<u8>);
 pub mod err;
 
 #[cfg(feature = "err")]
-pub use err::{bin::bin, code::code, json::json, state::captcha};
+pub use err::state::captcha;
