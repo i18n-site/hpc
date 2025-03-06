@@ -16,6 +16,8 @@ pub fn json() -> Json {
   Default::default()
 }
 
+impl std::error::Error for Json {}
+
 impl Json {
   pub fn set<V: Serialize>(&mut self, key: impl AsRef<str>, val: impl Borrow<V>) {
     if let Ok(key) = xerr::ok!(to_string(key.as_ref())) {
@@ -28,25 +30,8 @@ impl Json {
       }
     }
   }
-}
 
-impl<K: AsRef<str>, V: Serialize> FnMut<(K, V)> for Json {
-  extern "rust-call" fn call_mut(&mut self, args: (K, V)) -> Self::Output {
-    self.set(args.0, args.1);
-  }
-}
-
-impl<K: AsRef<str>, V: Serialize> FnOnce<(K, V)> for Json {
-  type Output = ();
-  extern "rust-call" fn call_once(self, _args: (K, V)) -> Self::Output {
-    unimplemented!()
-  }
-}
-
-impl std::error::Error for Json {}
-
-impl FnMut<()> for Json {
-  extern "rust-call" fn call_mut(&mut self, args: ()) -> Self::Output {
+  pub fn throw(&mut self) -> anyhow::Result<()> {
     if self.inner.is_empty() {
       return Ok(());
     }
@@ -58,23 +43,50 @@ impl FnMut<()> for Json {
   }
 }
 
-impl FnOnce<()> for Json {
-  type Output = anyhow::Result<()>;
-  extern "rust-call" fn call_once(self, _args: ()) -> Self::Output {
-    unimplemented!()
-  }
-}
+// impl<K: AsRef<str>, V: Serialize> FnMut<(K, V)> for Json {
+//   extern "rust-call" fn call_mut(&mut self, args: (K, V)) -> Self::Output {
+//     self.set(args.0, args.1);
+//   }
+// }
+//
+// impl<K: AsRef<str>, V: Serialize> FnOnce<(K, V)> for Json {
+//   type Output = ();
+//   extern "rust-call" fn call_once(self, _args: (K, V)) -> Self::Output {
+//     unimplemented!()
+//   }
+// }
+//
+//
+// impl FnMut<()> for Json {
+//   extern "rust-call" fn call_mut(&mut self, args: ()) -> Self::Output {
+//     if self.inner.is_empty() {
+//       return Ok(());
+//     }
+//     let mut err = Json {
+//       inner: std::mem::take(&mut self.inner),
+//     };
+//     err.inner.push('}');
+//     Err(err.into())
+//   }
+// }
+//
+// impl FnOnce<()> for Json {
+//   type Output = anyhow::Result<()>;
+//   extern "rust-call" fn call_once(self, _args: ()) -> Self::Output {
+//     unimplemented!()
+//   }
+// }
 
 #[macro_export]
-macro_rules! json_err {
+macro_rules! err_json {
   ($this:ident) => {
-    let mut json_err = $crate::json();
+    let mut err_json = $crate::json();
     macro_rules! err {
       ($mod:ident $code:ident) => {
-        json_err(stringify!($mod), $this::err::$mod::$code);
+        err_json(stringify!($mod), $this::err::$mod::$code);
       };
       () => {
-        json_err()?;
+        err_json.throw()?;
       };
     }
   };
