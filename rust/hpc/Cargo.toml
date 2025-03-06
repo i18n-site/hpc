@@ -31,7 +31,7 @@ features = [ "macros", "net", "rt", "rt-multi-thread" ]
 version = "0.8.1"
 
 [dependencies.ih]
-version = "0.1.11"
+version = "0.1.12"
 path = "../ih"
 
 [dependencies.ctx_]
