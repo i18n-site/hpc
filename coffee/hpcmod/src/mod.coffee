@@ -24,7 +24,7 @@ macro_rules! err {
   for [mod, val_id] from Object.entries dict
     rs.push "\npub mod #{mod} {"
     for [val, id] from Object.entries val_id
-      rs.push "  pub const #{val.toUpperCase()}: u64 = #{id};"
+      rs.push "  pub const #{val.toUpperCase()}: u32 = #{id};"
     rs.push '}'
 
   write(
