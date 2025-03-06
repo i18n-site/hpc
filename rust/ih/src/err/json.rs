@@ -76,18 +76,3 @@ impl Json {
 //     unimplemented!()
 //   }
 // }
-
-#[macro_export]
-macro_rules! err_json {
-  ($this:ident) => {
-    let mut err_json = $crate::err::json();
-    macro_rules! err {
-      ($mod:ident $code:ident) => {
-        err_json.set(stringify!($mod), $this::err::$mod::$code);
-      };
-      () => {
-        err_json.throw()?;
-      };
-    }
-  };
-}

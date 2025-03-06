@@ -4,20 +4,20 @@ use pb_jelly::Message;
 use crate::{Bin, Code, CodeBody, CodeLi, Json, State};
 
 pub fn try_into(err: anyhow::Error) -> Result<CodeBody> {
-  if let Some(t) = err.downcast_ref::<Code>() {
-    return Ok((State::CODE, Default::default()));
-  }
-
   if let Some(t) = err.downcast_ref::<CodeLi>() {
     return Ok((State::CODE_LI, t.serialize_to_vec()));
+  }
+
+  if let Some(t) = err.downcast_ref::<State>() {
+    return Ok((*t, Default::default()));
   }
 
   if let Some(t) = err.downcast_ref::<Json>() {
     return Ok((State::JSON, t.inner.as_bytes().into()));
   }
 
-  if let Some(t) = err.downcast_ref::<State>() {
-    return Ok((*t, Default::default()));
+  if let Some(t) = err.downcast_ref::<Code>() {
+    return Ok((State::CODE, Default::default()));
   }
 
   match err.downcast::<Bin>() {
