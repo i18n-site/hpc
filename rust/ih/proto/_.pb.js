@@ -13,7 +13,8 @@ const EMPTY_BIN = new Uint8Array();
 export const STATE_OK = 0;
 export const STATE_JSON = 1;
 export const STATE_CODE = 2;
-export const STATE_BIN = 3;
+export const STATE_CODE_LI = 3;
+export const STATE_BIN = 4;
 export const STATE_CAPTCHA = 10;
 export const STATE_NEED_SIGNIN = 11;
 export const STATE_NO_PERMISSION = 12;
@@ -110,6 +111,37 @@ const CodeRead = (msg, reader) => {
     switch (_P.getFieldNumber(reader)) {
       case 1: {
         msg = _P.readUint32(reader);
+        break;
+      }
+      default: {
+        _P.skipField(reader);
+        break;
+      }
+    }
+  }
+  return msg;
+};
+/**
+ * Serializes CodeLi to protobuf.
+ */
+export const CodeLiEncode = (msg) =>
+  _P.getResultBuffer(CodeLiWrite(msg, _P.binaryWriter()));
+/**
+ * Deserializes CodeLi from protobuf.
+ */
+export const CodeLiDecode = (bytes) =>
+  CodeLiRead(CodeLiNew(), _P.binaryReader(bytes));
+const CodeLiNew = () => [];
+const CodeLiWrite = _P.encoder1(_P.writePackedUint32);
+const CodeLiRead = (msg, reader) => {
+  while (_P.nextField(reader)) {
+    switch (_P.getFieldNumber(reader)) {
+      case 1: {
+        if (_P.isDelimited(reader)) {
+          msg.push(..._P.readPackedUint32(reader));
+        } else {
+          msg.push(_P.readUint32(reader));
+        }
         break;
       }
       default: {

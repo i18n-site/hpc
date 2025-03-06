@@ -22,6 +22,9 @@ pub fn try_into(err: anyhow::Error) -> Result<CodeBody> {
   }
 }
 
+#[cfg(feature = "err_code_li")]
+pub mod code_li;
+
 #[cfg(feature = "err_code")]
 pub mod code;
 

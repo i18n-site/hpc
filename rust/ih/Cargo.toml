@@ -1,6 +1,6 @@
 [package]
 name = "ih"
-version = "0.1.9"
+version = "0.1.11"
 edition = "2024"
 license = "MulanPSL-2.0"
 repository = "https://github.com/i18n-site/hpc.git"
@@ -8,8 +8,9 @@ homepage = "https://github.com/i18n-site/hpc/tree/dev/rust/ih"
 description = "interface proto for hpc"
 
 [features]
-default = ["err_code", "err_json", "err_bin"]
+default = ["err_code", "err_json", "err_bin", "err_code_li"]
 err_json = ["dep:sonic-rs", "dep:xerr", "err"]
+err_code_li = ["err"]
 err_bin = ["err"]
 err_code = ["err"]
 err = ["dep:anyhow"]

@@ -83,7 +83,7 @@ macro_rules! err_json {
     let mut err_json = $crate::json();
     macro_rules! err {
       ($mod:ident $code:ident) => {
-        err_json(stringify!($mod), $this::err::$mod::$code);
+        err_json.set(stringify!($mod), $this::err::$mod::$code);
       };
       () => {
         err_json.throw()?;

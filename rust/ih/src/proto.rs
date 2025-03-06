@@ -5,7 +5,8 @@ pub enum State {
   OK = 0,
   JSON = 1,
   CODE = 2,
-  BIN = 3,
+  CODE_LI = 3,
+  BIN = 4,
   CAPTCHA = 10,
   NEED_SIGNIN = 11,
   NO_PERMISSION = 12,
@@ -16,10 +17,11 @@ pub enum State {
   MIDDLEWARE_ERROR = 104,
 }
 impl State {
-  pub const KNOWN_VARIANTS: [State; 12] = [
+  pub const KNOWN_VARIANTS: [State; 13] = [
     State::OK,
     State::JSON,
     State::CODE,
+    State::CODE_LI,
     State::BIN,
     State::CAPTCHA,
     State::NEED_SIGNIN,
@@ -42,7 +44,8 @@ impl From<State> for u32 {
       State::OK => 0,
       State::JSON => 1,
       State::CODE => 2,
-      State::BIN => 3,
+      State::CODE_LI => 3,
+      State::BIN => 4,
       State::CAPTCHA => 10,
       State::NEED_SIGNIN => 11,
       State::NO_PERMISSION => 12,
@@ -61,7 +64,8 @@ impl ::std::convert::TryFrom<u32> for State {
       0 => Ok(State::OK),
       1 => Ok(State::JSON),
       2 => Ok(State::CODE),
-      3 => Ok(State::BIN),
+      3 => Ok(State::CODE_LI),
+      4 => Ok(State::BIN),
       10 => Ok(State::CAPTCHA),
       11 => Ok(State::NEED_SIGNIN),
       12 => Ok(State::NO_PERMISSION),
@@ -81,6 +85,7 @@ impl ::pb_jelly::ClosedProtoEnum for State {
       State::OK => "OK",
       State::JSON => "JSON",
       State::CODE => "CODE",
+      State::CODE_LI => "CODE_LI",
       State::BIN => "BIN",
       State::CAPTCHA => "CAPTCHA",
       State::NEED_SIGNIN => "NEED_SIGNIN",
@@ -456,6 +461,108 @@ impl ::pb_jelly::Reflection for Code {
   fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
     match field_name {
       "inner" => ::pb_jelly::reflection::FieldMut::Value(&mut self.inner),
+      _ => {
+        panic!("unknown field name given")
+      }
+    }
+  }
+}
+
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct CodeLi {
+  pub li: ::std::vec::Vec<u32>,
+}
+impl ::std::default::Default for CodeLi {
+  fn default() -> Self {
+    CodeLi {
+      li: ::std::default::Default::default(),
+    }
+  }
+}
+::lazy_static::lazy_static! {
+  pub static ref CodeLi_default: CodeLi = CodeLi::default();
+}
+impl ::pb_jelly::Message for CodeLi {
+  fn descriptor(&self) -> ::std::option::Option<::pb_jelly::MessageDescriptor> {
+    Some(::pb_jelly::MessageDescriptor {
+      name: "CodeLi",
+      full_name: "CodeLi",
+      fields: &[::pb_jelly::FieldDescriptor {
+        name: "li",
+        full_name: "CodeLi.li",
+        index: 0,
+        number: 1,
+        typ: ::pb_jelly::wire_format::Type::Varint,
+        label: ::pb_jelly::Label::Repeated,
+        oneof_index: None,
+      }],
+      oneofs: &[],
+    })
+  }
+  fn compute_size(&self) -> usize {
+    let mut size = 0usize;
+    if !self.li.is_empty() {
+      let mut li_size = 0usize;
+      for val in &self.li {
+        li_size += ::pb_jelly::Message::compute_size(val);
+      }
+      size += ::pb_jelly::wire_format::serialized_length(1);
+      size += ::pb_jelly::varint::serialized_length(li_size as u64);
+      size += li_size;
+    }
+    size
+  }
+  fn serialize<W: ::pb_jelly::PbBufferWriter>(&self, w: &mut W) -> ::std::io::Result<()> {
+    if !self.li.is_empty() {
+      let mut size = 0usize;
+      for val in &self.li {
+        size += ::pb_jelly::Message::compute_size(val);
+      }
+      ::pb_jelly::wire_format::write(1, ::pb_jelly::wire_format::Type::LengthDelimited, w)?;
+      ::pb_jelly::varint::write(size as u64, w)?;
+      for val in &self.li {
+        ::pb_jelly::Message::serialize(val, w)?;
+      }
+    }
+    Ok(())
+  }
+  fn deserialize<B: ::pb_jelly::PbBufferReader>(
+    &mut self,
+    mut buf: &mut B,
+  ) -> ::std::io::Result<()> {
+    while let Some((field_number, typ)) = ::pb_jelly::wire_format::read(&mut buf)? {
+      match field_number {
+        1 => {
+          ::pb_jelly::helpers::deserialize_packed::<B, u32>(
+            buf,
+            typ,
+            ::pb_jelly::wire_format::Type::Varint,
+            "CodeLi",
+            1,
+            &mut self.li,
+          )?;
+        }
+        _ => {
+          ::pb_jelly::skip(typ, &mut buf)?;
+        }
+      }
+    }
+    Ok(())
+  }
+}
+impl ::pb_jelly::Reflection for CodeLi {
+  fn which_one_of(&self, oneof_name: &str) -> ::std::option::Option<&'static str> {
+    match oneof_name {
+      _ => {
+        panic!("unknown oneof name given");
+      }
+    }
+  }
+  fn get_field_mut(&mut self, field_name: &str) -> ::pb_jelly::reflection::FieldMut<'_> {
+    match field_name {
+      "li" => {
+        unimplemented!("Repeated fields are not currently supported.")
+      }
       _ => {
         panic!("unknown field name given")
       }

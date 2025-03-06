@@ -20,7 +20,8 @@ enum State {
 
   JSON = 1;
   CODE = 2;
-  BIN = 3;
+  CODE_LI = 3;
+  BIN = 4;
 
   CAPTCHA = 10;
   NEED_SIGNIN = 11;
@@ -36,6 +37,11 @@ enum State {
 message Code
 {
   uint32 inner = 1;
+}
+
+message CodeLi
+{
+  repeated uint32 li = 1;
 }
 
 message Json
