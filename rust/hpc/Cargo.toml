@@ -24,7 +24,7 @@ cost_time = "0.1.2"
 axum_layer = "0.1.11"
 
 [dependencies.tokio]
-version = "1.43.0"
+version = "1.44.1"
 features = [ "macros", "net", "rt", "rt-multi-thread" ]
 
 [dependencies.axum]
@@ -54,5 +54,5 @@ static_init = "1.0.3"
 tracing = "0.1.41"
 
 [dev-dependencies.tokio]
-version = "1.43.0"
+version = "1.44.1"
 features = [ "macros", "rt", "rt-multi-thread", "time", "sync" ]

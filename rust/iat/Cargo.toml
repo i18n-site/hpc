@@ -11,5 +11,5 @@ description = "iat for hpc"
 proc-macro = true
 
 [dependencies]
-quote = "1.0.39"
-syn = { version = "2.0.99", features = ["full"] }
+quote = "1.0.40"
+syn = { version = "2.0.100", features = ["full"] }

@@ -10,10 +10,10 @@
     "@3-/protoscript": "^0.0.50",
     "@iarna/toml": "^2.2.5",
     "coffeescript": "^2.7.0",
-    "zx": "^8.3.2"
+    "zx": "^8.4.1"
   },
   "devDependencies": {
-    "esbuild": "^0.25.0",
+    "esbuild": "^0.25.1",
     "terser": "^5.39.0"
   }
 }

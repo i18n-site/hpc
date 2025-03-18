@@ -33,6 +33,27 @@ await do =>
   dir_proto = join dir_gen, 'proto'
   dir_js = join dir_gen, 'js'
 
+  dir_js_package_json = join dir_js, 'package.json'
+  if not existsSync dir_js_package_json
+    write(
+      dir_js_package_json
+      JSON.stringify(
+        {
+          version: "0.1.0",
+          license: "Apache-2.0",
+          author: "i18n.site@gmail.com",
+          type: 'module'
+          exports: {
+            ".": "./api.js",
+            "./*": "./*"
+          },
+          files: [
+            "./*"
+          ],
+        }
+      )
+    )
+
   if existsSync dir_proto
     for i from readdirSync dir_proto
       if i.endsWith('.proto') and not i.startsWith('_')

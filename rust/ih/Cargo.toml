@@ -22,7 +22,7 @@ all-features = true
 anyhow = { version = "1.0.97", optional = true }
 lazy_static = "1.5.0"
 pb-jelly = "0.0.17"
-sonic-rs = { version = "0.3.17", optional = true }
+sonic-rs = { version = "0.4.0", optional = true }
 xerr = { version = "0.1.15", optional = true }
 
 [dev-dependencies]
@@ -32,7 +32,7 @@ static_init = "1.0.3"
 tracing = "0.1.41"
 
 [dev-dependencies.tokio]
-version = "1.43.0"
+version = "1.44.1"
 features = ["macros", "rt", "rt-multi-thread", "time", "sync"]
 
 [package.metadata.cargo-machete]
