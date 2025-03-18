@@ -19,7 +19,7 @@ impl User {
   pub fn new(id: u64) -> Self {
     Self {
       id,
-      bin: intbin::u64_bin(id),
+      bin: intbin::to_bin(id),
     }
   }
 }
