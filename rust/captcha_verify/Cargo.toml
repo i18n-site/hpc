@@ -9,7 +9,7 @@ description = "captcha_verify"
 
 [dependencies]
 http = "1.3.1"
-ub64 = "0.1.11"
+ub64 = "0.1.14"
 xbin = "0.1.6"
 xerr = "0.1.15"
 xkv = { version = "0.1.44", features = ["r"] }
